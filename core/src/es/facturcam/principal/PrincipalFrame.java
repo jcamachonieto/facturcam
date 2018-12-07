@@ -1,6 +1,7 @@
 package es.facturcam.principal;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -16,6 +17,8 @@ public class PrincipalFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	protected PrincipalMenu menu;
+	
+	protected JPanel content;
 
 	/**
      * Create the frame.
@@ -32,12 +35,13 @@ public class PrincipalFrame extends JFrame {
         
         setTitle("FacturCam");
         
-        JPanel contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        contentPane.setLayout(new BorderLayout(0, 0));
-        setContentPane(contentPane);
+        content = new JPanel();
+        content.setBorder(new EmptyBorder(5, 5, 5, 5));
+        content.setLayout(new BorderLayout(0, 0));
+        content.setBackground(Color.green);
+        setContentPane(content);
         
-        menu = new PrincipalMenu();
+        menu = new PrincipalMenu(this);
         this.setJMenuBar(menu);
     }
 }
