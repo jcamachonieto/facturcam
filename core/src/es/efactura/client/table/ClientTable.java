@@ -4,12 +4,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import es.efactura.client.dialog.ClientDialog;
 import es.efactura.client.model.ClientDto;
 import es.efactura.table.ObjectTableModel;
 
 public class ClientTable extends ObjectTableModel<ClientDto> {
+	
+	ClientDialog dialog;
+	
+	public ClientTable(ClientDialog dialog) {
+		this.dialog = dialog;
+	}
 
 	@Override
 	public int getColumnCount() {
@@ -29,8 +37,8 @@ public class ClientTable extends ObjectTableModel<ClientDto> {
 			final JButton button = new JButton("Editar");
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					JOptionPane.showMessageDialog(JOptionPane.getFrameForComponent(button),
-							"Button clicked for row");
+					dialog.setVisible(true);
+					dialog.fillData(t);
 				}
 			});
 			return button;

@@ -40,12 +40,13 @@ public class ClientPanel extends JPanel {
 		{
 		  public void actionPerformed(ActionEvent e)
 		  {
+			  clientDialog.clearData();
 			  clientDialog.setVisible(true);
 		  }
 		});
 		add(showDialogButton);
 
-		JTable table = new JTable(new ClientTable());
+		JTable table = new JTable(new ClientTable(clientDialog));
 		ClientRowAction rowAction = new ClientRowAction();
 		TableColumn column = table.getColumnModel().getColumn(3);
 		column.setCellRenderer(rowAction);
