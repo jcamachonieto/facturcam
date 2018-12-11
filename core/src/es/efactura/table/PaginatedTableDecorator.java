@@ -1,4 +1,4 @@
-package es.facturcam.table;
+package es.efactura.table;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -62,9 +62,10 @@ public class PaginatedTableDecorator<T> {
 
     private void initPaginationComponents() {
         contentPanel = new JPanel(new BorderLayout());
+        contentPanel.add(new JScrollPane(table));
+        
         JPanel paginationPanel = createPaginationPanel();
         contentPanel.add(paginationPanel, BorderLayout.NORTH);
-        contentPanel.add(new JScrollPane(table));
     }
 
     private JPanel createPaginationPanel() {

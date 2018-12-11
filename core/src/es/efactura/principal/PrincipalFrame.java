@@ -1,4 +1,4 @@
-package es.facturcam.principal;
+package es.efactura.principal;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

@@ -1,4 +1,4 @@
-package es.facturcam.model;
+package es.efactura.client.model;
 
 public class ClientDto {
 

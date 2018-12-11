@@ -1,4 +1,4 @@
-package es.facturcam.principal;
+package es.efactura.principal;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,9 +10,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import es.facturcam.panels.BillsPanel;
-import es.facturcam.panels.ClientsPanel;
-import es.facturcam.panels.ConfigurationPanel;
+import es.efactura.client.panels.ClientPanel;
+import es.efactura.panels.BillsPanel;
+import es.efactura.panels.ConfigurationPanel;
 
 public class PrincipalMenu extends JMenuBar {
 
@@ -36,7 +36,7 @@ public class PrincipalMenu extends JMenuBar {
 		ActionListener menuClientsA = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PrincipalMenu.this.content.setContentPane(new ClientsPanel());		
+				PrincipalMenu.this.content.setContentPane(new ClientPanel());		
 				PrincipalMenu.this.content.revalidate();
 			}
 		};

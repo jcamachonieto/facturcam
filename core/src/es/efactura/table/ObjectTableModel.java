@@ -1,4 +1,4 @@
-package es.facturcam.table;
+package es.efactura.table;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;

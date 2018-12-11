@@ -1,11 +1,11 @@
 /**
  * 
  */
-package es.facturcam;
+package es.efactura;
 
 import java.awt.EventQueue;
 
-import es.facturcam.principal.PrincipalFrame;
+import es.efactura.principal.PrincipalFrame;
 
 /**
  * @author jcamacho
