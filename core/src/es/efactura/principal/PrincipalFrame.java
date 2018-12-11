@@ -33,7 +33,7 @@ public class PrincipalFrame extends JFrame {
         
         setExtendedState(JFrame.MAXIMIZED_BOTH); 
         
-        setTitle("FacturCam");
+        setTitle("efactura");
         
         content = new JPanel();
         content.setBorder(new EmptyBorder(5, 5, 5, 5));
