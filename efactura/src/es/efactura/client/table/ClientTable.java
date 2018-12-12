@@ -4,8 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 import es.efactura.client.dialog.ClientDialog;
 import es.efactura.client.model.ClientDto;
@@ -13,6 +11,10 @@ import es.efactura.table.ObjectTableModel;
 
 public class ClientTable extends ObjectTableModel<ClientDto> {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	ClientDialog dialog;
 	
 	public ClientTable(ClientDialog dialog) {

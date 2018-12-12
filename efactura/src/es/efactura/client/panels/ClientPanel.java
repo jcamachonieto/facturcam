@@ -1,6 +1,5 @@
 package es.efactura.client.panels;
 
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,12 +8,11 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
-import javax.swing.text.TableView.TableRow;
 
 import es.efactura.client.dialog.ClientDialog;
+import es.efactura.client.model.ClientDataProvider;
 import es.efactura.client.model.ClientDto;
 import es.efactura.client.table.ClientRowAction;
 import es.efactura.client.table.ClientTable;
@@ -69,14 +67,8 @@ public class ClientPanel extends JPanel {
 
 	private PaginationDataProvider<ClientDto> createDataProvider() {
 
-		final List<ClientDto> list = new ArrayList<>();
-        for (int i = 1; i <= 500; i++) {
-        	ClientDto e = new ClientDto();
-            e.setId(i);
-            e.setName("name" + i);
-            e.setCif("cif" + i);
-            list.add(e);
-        }
+		ClientDataProvider dataProvider = new ClientDataProvider();
+		final List<ClientDto> list = dataProvider.getList();
 
 		return new PaginationDataProvider<ClientDto>() {
 			@Override
