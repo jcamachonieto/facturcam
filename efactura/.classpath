@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="lib/hsqldb.jar"/>
 	<classpathentry kind="lib" path="lib/jackcess-2.1.11.jar"/>
 	<classpathentry kind="lib" path="lib/ucanaccess-4.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/lombok.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
