@@ -3,11 +3,15 @@ package es.efactura.table;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableModel;
+
+import lombok.Getter;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.List;
 
+@Getter
 public class PaginatedTableDecorator<T> {
     private JTable table;
     private PaginationDataProvider<T> dataProvider;

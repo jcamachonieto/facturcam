@@ -1,8 +1,6 @@
 package es.efactura.client.model;
 
-import java.io.File;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -28,6 +26,33 @@ public class ClientDataProvider {
 			DataProvider.closeConnection(conn);
 		}
 		return convertData(data);
+	}
+	
+	public void upsert(ClientDto data) {
+		Connection conn = null;
+		String query = null;
+		try {
+			conn = DataProvider.getConnection();
+			
+			List<Object> params = new ArrayList<Object>();
+			
+			if (data.getId() == 0) {
+				query = "INSERT INTO Client ([name], [cif]) VALUES (?, ?)";
+				params.add(data.getName());
+				params.add(data.getCif());
+			} else {
+				query = "UPDATE Client SET [name] = ?, [CIF] = ? WHERE [Id] = ?";
+				params.add(data.getName());
+				params.add(data.getCif());
+				params.add(data.getId());
+			}
+			
+			DataProvider.execute(conn, query, params);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DataProvider.closeConnection(conn);
+		}
 	}
 	
 	private List<ClientDto> convertData(List<Map<String, Object>> sourcedata) {
