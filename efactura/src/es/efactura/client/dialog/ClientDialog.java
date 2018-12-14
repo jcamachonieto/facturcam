@@ -31,7 +31,7 @@ public class ClientDialog extends JDialog {
 		setLocationRelativeTo(null);
 
 		id = new JTextField();
-		// id.setVisible(false);
+		id.setVisible(false);
 		
 		name = new JTextField();
 		cif = new JTextField();

@@ -55,6 +55,24 @@ public class ClientDataProvider {
 		}
 	}
 	
+	public void delete(int id) {
+		Connection conn = null;
+		try {
+			conn = DataProvider.getConnection();
+			
+			String query = "DELETE FROM Client WHERE [Id] = ?";
+			
+			List<Object> params = new ArrayList<Object>();
+			params.add(id);
+			
+			DataProvider.execute(conn, query, params);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DataProvider.closeConnection(conn);
+		}
+	}
+	
 	private List<ClientDto> convertData(List<Map<String, Object>> sourcedata) {
 		List<ClientDto> data = new ArrayList<>();
 		if (sourcedata != null) {

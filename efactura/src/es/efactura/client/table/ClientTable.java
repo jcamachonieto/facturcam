@@ -4,9 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 import es.efactura.client.dialog.ClientDialog;
+import es.efactura.client.model.ClientDataProvider;
 import es.efactura.client.model.ClientDto;
+import es.efactura.client.panels.ClientPanel;
 import es.efactura.table.ObjectTableModel;
 
 public class ClientTable extends ObjectTableModel<ClientDto> {
@@ -15,32 +18,34 @@ public class ClientTable extends ObjectTableModel<ClientDto> {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	ClientDialog dialog;
 	
-	public ClientTable(ClientDialog dialog) {
-		this.dialog = dialog;
+	ClientPanel parent;
+	
+	public ClientTable(ClientPanel parent) {
+		this.parent = parent;
 	}
 
 	@Override
 	public int getColumnCount() {
-		return 4;
+		return 3;
 	}
 
 	@Override
 	public Object getValueAt(ClientDto t, int columnIndex) {
 		switch (columnIndex) {
 		case 0:
-			return t.getId();
-		case 1:
 			return t.getName();
-		case 2:
+		case 1:
 			return t.getCif();
-		case 3:
-			final JButton button = new JButton("Editar");
+		case 2:
+			final JButton button = new JButton("Eliminar");
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					dialog.setVisible(true);
-					dialog.fillData(t);
+					int dialogResult = JOptionPane.showConfirmDialog(null, "¿Desea eliminar el registro?","Advertencia", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					if(dialogResult == JOptionPane.YES_OPTION){
+						 new ClientDataProvider().delete(t.getId());
+						 parent.refresh();
+					}
 				}
 			});
 			return button;
@@ -52,12 +57,10 @@ public class ClientTable extends ObjectTableModel<ClientDto> {
 	public String getColumnName(int column) {
 		switch (column) {
 		case 0:
-			return "Id";
-		case 1:
 			return "Name";
-		case 2:
+		case 1:
 			return "Cif";
-		case 3:
+		case 2:
 			return "Acciones";
 		}
 		return null;

@@ -1,8 +1,10 @@
 package es.efactura.client.panels;
 
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -27,36 +29,34 @@ public class ClientPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private JTable table;
 	private PaginatedTableDecorator<ClientDto> paginatedDecorator;
 	private List<ClientDto> listData;
-	private PaginationDataProvider<ClientDto> paginationDataProvider; 
-	
+	private PaginationDataProvider<ClientDto> paginationDataProvider;
+
 	private ClientDataProvider clientDataProvider;
 
 	public ClientPanel() {
 		super(new GridLayout(3, 0));
-		
+
 		clientDataProvider = new ClientDataProvider();
-		
+
 		ClientDialog clientDialog = new ClientDialog(600, 600, this);
 		clientDialog.setVisible(false);
-		
+
 		JButton showDialogButton = new JButton("Añadir");
-		showDialogButton.addActionListener(new ActionListener()
-		{
-		  public void actionPerformed(ActionEvent e)
-		  {
-			  clientDialog.clearData();
-			  clientDialog.setVisible(true);
-		  }
+		showDialogButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clientDialog.clearData();
+				clientDialog.setVisible(true);
+			}
 		});
 		add(showDialogButton);
 
-		table = new JTable(new ClientTable(clientDialog));
+		table = new JTable(new ClientTable(this));
 		ClientRowAction rowAction = new ClientRowAction();
-		TableColumn column = table.getColumnModel().getColumn(3);
+		TableColumn column = table.getColumnModel().getColumn(2);
 		column.setCellRenderer(rowAction);
 		table.addMouseListener(new JTableButtonMouseListener(table));
 
@@ -65,32 +65,44 @@ public class ClientPanel extends JPanel {
 		// table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		table.setFillsViewportHeight(true);
 
+		table.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mousePressed(MouseEvent me) {
+				JTable table = (JTable) me.getSource();
+				Point p = me.getPoint();
+				int row = table.rowAtPoint(p);
+				if (me.getClickCount() == 2) {
+					clientDialog.setVisible(true);
+					clientDialog.fillData(listData.get(row));
+				}
+			}
+		});
+
 		// Add the scroll pane to this panel.
 		add(table);
 
 		paginationDataProvider = createDataProvider();
-		paginatedDecorator = PaginatedTableDecorator.decorate(table, paginationDataProvider,
-				new int[] { 10, 20, 50 }, 10);
-		
+		paginatedDecorator = PaginatedTableDecorator.decorate(table, paginationDataProvider, new int[] { 10, 20, 50 },
+				10);
+
 		add(paginatedDecorator.getContentPanel());
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void refresh() {
 		listData = clientDataProvider.getList();
-		
+
 		TableModel model = table.getModel();
 		int startIndex = (paginatedDecorator.getCurrentPage() - 1) * paginatedDecorator.getCurrentPageSize();
-        int endIndex = startIndex + paginatedDecorator.getCurrentPageSize();
-        if (endIndex > paginationDataProvider.getTotalRowCount()) {
-            endIndex = paginationDataProvider.getTotalRowCount();
-        }
-        List<ClientDto> rows = paginationDataProvider.getRows(startIndex, endIndex);
-        
-        ObjectTableModel<ClientDto> objectTableModel = (ObjectTableModel<ClientDto>) model;
-        
-        objectTableModel.setObjectRows(rows);
-        objectTableModel.fireTableDataChanged();
+		int endIndex = startIndex + paginatedDecorator.getCurrentPageSize();
+		if (endIndex > paginationDataProvider.getTotalRowCount()) {
+			endIndex = paginationDataProvider.getTotalRowCount();
+		}
+		List<ClientDto> rows = paginationDataProvider.getRows(startIndex, endIndex);
+
+		ObjectTableModel<ClientDto> objectTableModel = (ObjectTableModel<ClientDto>) model;
+
+		objectTableModel.setObjectRows(rows);
+		objectTableModel.fireTableDataChanged();
 	}
 
 	private PaginationDataProvider<ClientDto> createDataProvider() {
