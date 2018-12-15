@@ -21,9 +21,7 @@ public class ClientDialog extends JDialog {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	JTextField id;
-	JTextField name;
-	JTextField cif;
+	JTextField id, name, cif, address;
 
 	public ClientDialog(int width, int height, ClientPanel parent) {
 		setSize(width, height);
@@ -35,16 +33,20 @@ public class ClientDialog extends JDialog {
 		
 		name = new JTextField();
 		cif = new JTextField();
+		address = new JTextField();
 
 		JPanel panel = new JPanel(new GridLayout(10, 10));
 
 		panel.add(id);
 
-		panel.add(new JLabel("Nombre:"));
+		panel.add(new JLabel("Nombre fiscal:"));
 		panel.add(name);
 
 		panel.add(new JLabel("CIF/NIF:"));
 		panel.add(cif);
+		
+		panel.add(new JLabel("Dirección fiscal:"));
+		panel.add(address);
 
 		JButton saveButton = new JButton("Guardar");
 		saveButton.addActionListener(new ActionListener()
@@ -55,6 +57,7 @@ public class ClientDialog extends JDialog {
 					  .id(id.getText().equals("") ? 0 : Integer.parseInt(id.getText()))
 					  .name(name.getText())
 					  .cif(cif.getText())
+					  .address(address.getText())
 					  .build();
 			  new ClientDataProvider().upsert(client);
 			  setVisible(false);
@@ -71,6 +74,7 @@ public class ClientDialog extends JDialog {
 		id.setText("" + t.getId());
 		name.setText(t.getName());
 		cif.setText(t.getCif());
+		address.setText(t.getAddress());
 	}
 	
 	public void clearData() {
@@ -78,6 +82,7 @@ public class ClientDialog extends JDialog {
 		id.setText("");
 		name.setText("");
 		cif.setText("");
+		address.setText("");
 	}
 
 }

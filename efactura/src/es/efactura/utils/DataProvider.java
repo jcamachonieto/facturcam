@@ -41,15 +41,15 @@ public class DataProvider {
 	public static void execute(Connection conn, String query, List<Object> params) throws SQLException {
 		PreparedStatement st = null;
 		try {
-		st = conn.prepareStatement(query);
+			st = conn.prepareStatement(query);
 
-		if (params != null) {
-			for (int i = 1; i <= params.size(); i++) {
-				st.setObject(i, params.get(i - 1));
+			if (params != null) {
+				for (int i = 1; i <= params.size(); i++) {
+					st.setObject(i, params.get(i - 1));
+				}
 			}
-		}
-		
-		st.executeUpdate();
+
+			st.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

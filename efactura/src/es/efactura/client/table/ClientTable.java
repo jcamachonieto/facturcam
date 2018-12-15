@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-import es.efactura.client.dialog.ClientDialog;
 import es.efactura.client.model.ClientDataProvider;
 import es.efactura.client.model.ClientDto;
 import es.efactura.client.panels.ClientPanel;
@@ -27,7 +26,7 @@ public class ClientTable extends ObjectTableModel<ClientDto> {
 
 	@Override
 	public int getColumnCount() {
-		return 3;
+		return 4;
 	}
 
 	@Override
@@ -38,6 +37,8 @@ public class ClientTable extends ObjectTableModel<ClientDto> {
 		case 1:
 			return t.getCif();
 		case 2:
+			return t.getAddress();
+		case 3:
 			final JButton button = new JButton("Eliminar");
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -57,10 +58,12 @@ public class ClientTable extends ObjectTableModel<ClientDto> {
 	public String getColumnName(int column) {
 		switch (column) {
 		case 0:
-			return "Name";
+			return "Nombre fiscal";
 		case 1:
-			return "Cif";
+			return "CIF";
 		case 2:
+			return "Dirección fiscal";
+		case 3:
 			return "Acciones";
 		}
 		return null;

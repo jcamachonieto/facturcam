@@ -56,7 +56,7 @@ public class ClientPanel extends JPanel {
 
 		table = new JTable(new ClientTable(this));
 		ClientRowAction rowAction = new ClientRowAction();
-		TableColumn column = table.getColumnModel().getColumn(2);
+		TableColumn column = table.getColumnModel().getColumn(3);
 		column.setCellRenderer(rowAction);
 		table.addMouseListener(new JTableButtonMouseListener(table));
 

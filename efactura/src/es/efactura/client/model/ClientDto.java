@@ -10,5 +10,6 @@ public class ClientDto {
 	private int id;
 	private String name;
 	private String cif;
+	private String address;
 	
 }

@@ -41,9 +41,10 @@ public class ClientDataProvider {
 				params.add(data.getName());
 				params.add(data.getCif());
 			} else {
-				query = "UPDATE Client SET [name] = ?, [CIF] = ? WHERE [Id] = ?";
+				query = "UPDATE Client SET [name] = ?, [CIF] = ?, [address] = ? WHERE [Id] = ?";
 				params.add(data.getName());
 				params.add(data.getCif());
+				params.add(data.getAddress());
 				params.add(data.getId());
 			}
 			
@@ -81,6 +82,7 @@ public class ClientDataProvider {
 						.id((int) d.get("Id"))
 						.cif((String) d.get("cif"))
 						.name((String) d.get("name"))
+						.address((String) d.get("address"))
 						.build());
 			}
 		}
