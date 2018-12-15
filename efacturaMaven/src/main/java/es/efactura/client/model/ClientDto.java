@@ -11,5 +11,11 @@ public class ClientDto {
 	private String name;
 	private String cif;
 	private String address;
-	
+	private String location;
+	private String province;
+	private String postalCode;
+	private String country;
+	private String telephone;
+	private String email;
+
 }

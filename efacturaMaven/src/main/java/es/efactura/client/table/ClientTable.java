@@ -25,9 +25,12 @@ public class ClientTable extends ObjectTableModel<ClientDto> {
 	@Autowired
 	ClientPanel parent;
 
+	@Autowired
+	private ClientDataProvider clientDataProvider;
+
 	@Override
 	public int getColumnCount() {
-		return 4;
+		return 10;
 	}
 
 	@Override
@@ -40,14 +43,26 @@ public class ClientTable extends ObjectTableModel<ClientDto> {
 		case 2:
 			return t.getAddress();
 		case 3:
+			return t.getLocation();
+		case 4:
+			return t.getProvince();
+		case 5:
+			return t.getPostalCode();
+		case 6:
+			return t.getCountry();
+		case 7:
+			return t.getTelephone();
+		case 8:
+			return t.getEmail();
+		case 9:
 			final JButton button = new JButton("Eliminar");
 			button.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					int dialogResult = JOptionPane.showConfirmDialog(null, "�Desea eliminar el registro?",
+					int dialogResult = JOptionPane.showConfirmDialog(null, "¿Desea eliminar el registro?",
 							"Advertencia", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 					if (dialogResult == JOptionPane.YES_OPTION) {
-						new ClientDataProvider().delete(t.getId());
+						clientDataProvider.delete(t.getId());
 						parent.refresh();
 					}
 				}
@@ -65,8 +80,20 @@ public class ClientTable extends ObjectTableModel<ClientDto> {
 		case 1:
 			return "CIF";
 		case 2:
-			return "Direcci�n fiscal";
+			return "Dirección";
 		case 3:
+			return "Localidad";
+		case 4:
+			return "Provincia";
+		case 5:
+			return "Código postal";
+		case 6:
+			return "País";
+		case 7:
+			return "Teléfono";
+		case 8:
+			return "Email";
+		case 9:
 			return "Acciones";
 		}
 		return null;

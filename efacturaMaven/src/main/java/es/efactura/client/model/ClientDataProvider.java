@@ -40,14 +40,30 @@ public class ClientDataProvider {
 			List<Object> params = new ArrayList<Object>();
 
 			if (data.getId() == 0) {
-				query = "INSERT INTO Client ([name], [cif]) VALUES (?, ?)";
-				params.add(data.getName());
-				params.add(data.getCif());
-			} else {
-				query = "UPDATE Client SET [name] = ?, [CIF] = ?, [address] = ? WHERE [Id] = ?";
+				query = "INSERT INTO Client ([name], [cif], [address], [location], [province], "
+						+ "[postalCode], [country], [telephone], [email]) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				params.add(data.getName());
 				params.add(data.getCif());
 				params.add(data.getAddress());
+				params.add(data.getLocation());
+				params.add(data.getProvince());
+				params.add(data.getPostalCode());
+				params.add(data.getCountry());
+				params.add(data.getTelephone());
+				params.add(data.getEmail());
+			} else {
+				query = "UPDATE Client SET [name] = ?, [CIF] = ?, [address] = ?, [location] = ?,"
+						+ " [province] = ?, [postalCode] = ?, [country] = ?, [telephone] = ?,"
+						+ " [email] = ? WHERE [Id] = ?";
+				params.add(data.getName());
+				params.add(data.getCif());
+				params.add(data.getAddress());
+				params.add(data.getLocation());
+				params.add(data.getProvince());
+				params.add(data.getPostalCode());
+				params.add(data.getCountry());
+				params.add(data.getTelephone());
+				params.add(data.getEmail());
 				params.add(data.getId());
 			}
 
@@ -81,8 +97,18 @@ public class ClientDataProvider {
 		List<ClientDto> data = new ArrayList<>();
 		if (sourcedata != null) {
 			for (Map<String, Object> d : sourcedata) {
-				data.add(ClientDto.builder().id((int) d.get("Id")).cif((String) d.get("cif"))
-						.name((String) d.get("name")).address((String) d.get("address")).build());
+				data.add(ClientDto.builder()
+						.id((int) d.get("Id"))
+						.cif((String) d.get("cif"))
+						.name((String) d.get("name"))
+						.address((String) d.get("address"))
+						.location((String) d.get("location"))
+						.province((String) d.get("province"))
+						.postalCode((String) d.get("postalCode"))
+						.country((String) d.get("country"))
+						.telephone((String) d.get("telephone"))
+						.email((String) d.get("email"))
+						.build());
 			}
 		}
 		return data;

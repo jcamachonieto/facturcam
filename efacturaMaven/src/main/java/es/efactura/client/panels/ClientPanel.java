@@ -59,7 +59,7 @@ public class ClientPanel extends JPanel {
 		clientDialog.initialize(600, 600);
 		clientDialog.setVisible(false);
 
-		JButton showDialogButton = new JButton("A�adir");
+		JButton showDialogButton = new JButton("Añadir");
 		showDialogButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -70,7 +70,7 @@ public class ClientPanel extends JPanel {
 		add(showDialogButton);
 
 		table = new JTable(clientTable);
-		TableColumn column = table.getColumnModel().getColumn(3);
+		TableColumn column = table.getColumnModel().getColumn(9);
 		column.setCellRenderer(clientRowAction);
 		table.addMouseListener(new JTableButtonMouseListener(table));
 
