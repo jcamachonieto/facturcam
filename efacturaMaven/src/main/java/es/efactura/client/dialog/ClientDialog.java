@@ -7,7 +7,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -182,9 +184,21 @@ public class ClientDialog extends JDialog {
 								.telephone(telephone.getText())
 								.email(email.getText())
 								.build();
-						clientDataProvider.upsert(client);
-						setVisible(false);
-						parent.refresh(parent.getFindText().getText());
+						if (cif.isEditable()) {
+							boolean exists = clientDataProvider.exists(client);
+							if (!exists) {
+								clientDataProvider.upsert(client);
+								setVisible(false);
+								parent.refresh(parent.getFindText().getText());
+							} else {
+								JOptionPane.showMessageDialog(new JFrame(), "Cliente ya existente", "Dialog",
+								        JOptionPane.ERROR_MESSAGE);
+							}
+						} else {
+							clientDataProvider.upsert(client);
+							setVisible(false);
+							parent.refresh(parent.getFindText().getText());
+						}
 					}
 				});
 				buttonPane.add(saveButton);
@@ -198,6 +212,7 @@ public class ClientDialog extends JDialog {
 		id.setText("" + t.getId());
 		name.setText(t.getName());
 		cif.setText(t.getCif());
+		cif.setEditable(false);
 		address.setText(t.getAddress());
 		location.setText(t.getLocation());
 		province.setText(t.getProvince());

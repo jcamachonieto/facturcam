@@ -35,13 +35,13 @@ public class PrincipalMenu extends JMenuBar {
 
 		this.content = content;
 
+		clientPanel.initialize();
 		clientPanel.setVisible(false);
 
 		ActionListener menuClientsA = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				clientPanel.setVisible(true);
-				clientPanel.initialize();
 				PrincipalMenu.this.content.setContentPane(clientPanel);
 				PrincipalMenu.this.content.revalidate();
 			}

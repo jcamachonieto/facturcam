@@ -102,5 +102,39 @@ public class DataProvider {
 		}
 		return data;
 	}
+	
+	public List<Map<String, Object>> getData(Connection conn, PreparedStatement statement) throws SQLException {
+		List<Map<String, Object>> data = new ArrayList<>();
+		ResultSet resultSet = null;
+		try {
+			// Step 2.C: Executing SQL and
+			// retrieve data into ResultSet
+			resultSet = statement.executeQuery();
+
+			ResultSetMetaData metaData = resultSet.getMetaData();
+			int columnCount = metaData.getColumnCount();
+
+			// processing returned data and printing into console
+			while (resultSet.next()) {
+				Map<String, Object> columns = new LinkedHashMap<String, Object>();
+
+				for (int i = 1; i <= columnCount; i++) {
+					columns.put(metaData.getColumnLabel(i), resultSet.getObject(i));
+				}
+
+				data.add(columns);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (statement != null) {
+				statement.close();
+			}
+			if (resultSet != null) {
+				resultSet.close();
+			}
+		}
+		return data;
+	}
 
 }

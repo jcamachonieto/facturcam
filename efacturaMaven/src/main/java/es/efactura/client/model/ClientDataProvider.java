@@ -1,6 +1,7 @@
 package es.efactura.client.model;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,11 +53,10 @@ public class ClientDataProvider {
 				params.add(data.getTelephone());
 				params.add(data.getEmail());
 			} else {
-				query = "UPDATE Client SET [name] = ?, [CIF] = ?, [address] = ?, [location] = ?,"
+				query = "UPDATE Client SET [name] = ?, [address] = ?, [location] = ?,"
 						+ " [province] = ?, [postalCode] = ?, [country] = ?, [telephone] = ?,"
 						+ " [email] = ? WHERE [Id] = ?";
 				params.add(data.getName());
-				params.add(data.getCif());
 				params.add(data.getAddress());
 				params.add(data.getLocation());
 				params.add(data.getProvince());
@@ -130,5 +130,21 @@ public class ClientDataProvider {
 			}
 		}
 		return data;
+	}
+
+	public boolean exists(ClientDto client) {
+		Connection conn = null;
+		List<Map<String, Object>> data = null;
+		try {
+			conn = dataProvider.getConnection();
+			PreparedStatement statement = conn.prepareStatement("SELECT * FROM Client WHERE [cif] = ?");
+			statement.setString(1, client.getCif());
+			data = dataProvider.getData(conn,  statement);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			dataProvider.closeConnection(conn);
+		}
+		return data != null && data.size() > 0;
 	}
 }
