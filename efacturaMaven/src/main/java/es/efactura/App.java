@@ -3,12 +3,19 @@
  */
 package es.efactura;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Toolkit;
+
+import javax.swing.JFrame;
+import javax.swing.JProgressBar;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import es.efactura.license.model.LicenseDataProvider;
 import es.efactura.principal.PrincipalFrame;
 
 /**
@@ -18,10 +25,6 @@ import es.efactura.principal.PrincipalFrame;
 @SpringBootApplication
 public class App {
 
-	public App() {
-
-	}
-
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 
@@ -29,7 +32,27 @@ public class App {
 
 		EventQueue.invokeLater(() -> {
 			PrincipalFrame principalFrame = ctx.getBean(PrincipalFrame.class);
-			principalFrame.initialize();
+			
+			LicenseDataProvider licenseDataProvider = ctx.getBean(LicenseDataProvider.class);
+			
+			JFrame frame = new JFrame("Inicializando");
+			Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+			frame.setBounds(0, 0, (int) dim.getWidth(), (int) dim.getHeight());
+		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		    frame.setLocationRelativeTo(null);
+		    final JProgressBar aJProgressBar = new JProgressBar(JProgressBar.HORIZONTAL);
+		    aJProgressBar.setIndeterminate(true);
+
+		    frame.add(aJProgressBar, BorderLayout.NORTH);
+		    frame.setSize(300, 200);
+		    frame.setVisible(true);
+		    
+		    if (licenseDataProvider.isValidLicense()) {
+		    	principalFrame.initialize();	
+		    	frame.setVisible(false);
+		    } else {
+		    	System.exit(0);
+		    }
 		});
 	}
 

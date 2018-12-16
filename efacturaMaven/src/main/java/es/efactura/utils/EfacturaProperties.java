@@ -17,5 +17,24 @@ public class EfacturaProperties {
 	@Value("${driverManager}")
 	@Getter
 	private String driverManager;
+	
+	@Value("${license.keyfile}")
+	@Getter
+	private String licenseKeyFile;
+	
+	@Value("${license.database.host}")
+	@Getter
+	private String licenseDatabaseHost;
 
+	@Value("${license.database.name}")
+	@Getter
+	private String licenseDatabaseName;
+	
+	@Value("${license.database.username}")
+	@Getter
+	private String licenseDatabaseUsername;
+	
+	@Value("${version}")
+	@Getter
+	private String version;
 }

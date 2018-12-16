@@ -33,7 +33,6 @@ public class PrincipalFrame extends JFrame {
 
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds(0, 0, (int) dim.getWidth(), (int) dim.getHeight());
-		// setBounds(100, 100, 800, 600);
 		setLocationRelativeTo(null);
 
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
