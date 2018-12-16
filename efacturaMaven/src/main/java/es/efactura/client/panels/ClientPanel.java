@@ -3,6 +3,8 @@ package es.efactura.client.panels;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
@@ -31,8 +33,10 @@ import es.efactura.utils.table.JTableButtonMouseListener;
 import es.efactura.utils.table.ObjectTableModel;
 import es.efactura.utils.table.PaginatedTableDecorator;
 import es.efactura.utils.table.PaginationDataProvider;
+import lombok.Getter;
 
 @Component
+@Getter
 public class ClientPanel extends JPanel {
 
 	/**
@@ -56,45 +60,45 @@ public class ClientPanel extends JPanel {
 
 	@Autowired
 	ClientRowAction clientRowAction;
+	
+	JTextField findText;
 
 	public void initialize() {
 		clientDialog.initialize();
 		clientDialog.setVisible(false);
-		
-		setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.BUTTON_COLSPEC,
-				ColumnSpec.decode("256px:grow"),
-				FormSpecs.BUTTON_COLSPEC,
-				FormSpecs.BUTTON_COLSPEC},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),
-				FormSpecs.UNRELATED_GAP_ROWSPEC,
-				RowSpec.decode("22px:grow"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,}));
+
+		setLayout(new FormLayout(
+				new ColumnSpec[] { FormSpecs.BUTTON_COLSPEC, ColumnSpec.decode("default:grow"),
+						FormSpecs.BUTTON_COLSPEC, ColumnSpec.decode("256px:grow"), FormSpecs.BUTTON_COLSPEC,
+						FormSpecs.BUTTON_COLSPEC, FormSpecs.BUTTON_COLSPEC },
+				new RowSpec[] { FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("default:grow"), FormSpecs.UNRELATED_GAP_ROWSPEC, RowSpec.decode("22px:grow"),
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, }));
 		{
 			JLabel findLabel = new JLabel("Buscar");
 			add(findLabel, "1, 2");
-			
-			JTextField findText = new JTextField();
+
+			findText = new JTextField();
+			findText.addKeyListener(new KeyAdapter() {
+			      @Override
+				public void keyReleased(KeyEvent e) {
+			        JTextField textField = (JTextField) e.getSource();
+			        refresh(textField.getText());
+			      }
+
+			      @Override
+				public void keyTyped(KeyEvent e) {
+			      }
+
+			      @Override
+				public void keyPressed(KeyEvent e) {
+			      }
+			    });
 			add(findText, "2, 2");
-			
-			JButton filterButton = new JButton("Filtrar");
-			add(filterButton, "3, 2");
-			
+
 			JButton showDialogButton = new JButton("Añadir");
 			showDialogButton.addActionListener(new ActionListener() {
 				@Override
@@ -103,7 +107,7 @@ public class ClientPanel extends JPanel {
 					clientDialog.setVisible(true);
 				}
 			});
-			add(showDialogButton, "4, 2");
+			add(showDialogButton, "5, 2");
 		}
 
 		table = new JTable(clientTable);
@@ -130,7 +134,9 @@ public class ClientPanel extends JPanel {
 		});
 
 		// Add the scroll pane to this panel.
+		//add(new JScrollPane(table));
 		add(table, "1, 4, 4, 1, fill, fill");
+		table.updateUI();
 
 		paginationDataProvider = createDataProvider();
 		paginatedTableDecorator = PaginatedTableDecorator.decorate(table, paginationDataProvider,
@@ -140,8 +146,8 @@ public class ClientPanel extends JPanel {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void refresh() {
-		listData = clientDataProvider.getList();
+	public void refresh(String filter) {
+		listData = clientDataProvider.getList(filter);
 
 		TableModel model = table.getModel();
 		int startIndex = (paginatedTableDecorator.getCurrentPage() - 1) * paginatedTableDecorator.getCurrentPageSize();
@@ -158,7 +164,7 @@ public class ClientPanel extends JPanel {
 	}
 
 	private PaginationDataProvider<ClientDto> createDataProvider() {
-		listData = clientDataProvider.getList();
+		listData = clientDataProvider.getList(findText.getText());
 
 		return new PaginationDataProvider<ClientDto>() {
 			@Override

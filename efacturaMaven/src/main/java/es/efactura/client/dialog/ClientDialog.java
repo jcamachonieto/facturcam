@@ -184,7 +184,7 @@ public class ClientDialog extends JDialog {
 								.build();
 						clientDataProvider.upsert(client);
 						setVisible(false);
-						parent.refresh();
+						parent.refresh(parent.getFindText().getText());
 					}
 				});
 				buttonPane.add(saveButton);

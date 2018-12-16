@@ -63,7 +63,7 @@ public class ClientTable extends ObjectTableModel<ClientDto> {
 							"Advertencia", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 					if (dialogResult == JOptionPane.YES_OPTION) {
 						clientDataProvider.delete(t.getId());
-						parent.refresh();
+						parent.refresh(parent.getFindText().getText());
 					}
 				}
 			});

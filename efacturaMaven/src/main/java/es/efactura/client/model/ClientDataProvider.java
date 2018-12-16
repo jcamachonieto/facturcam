@@ -17,7 +17,7 @@ public class ClientDataProvider {
 	@Autowired
 	DataProvider dataProvider;
 
-	public List<ClientDto> getList() {
+	public List<ClientDto> getList(String filter) {
 		Connection conn = null;
 		List<Map<String, Object>> data = null;
 		try {
@@ -28,7 +28,7 @@ public class ClientDataProvider {
 		} finally {
 			dataProvider.closeConnection(conn);
 		}
-		return convertData(data);
+		return convertData(data, filter);
 	}
 
 	public void upsert(ClientDto data) {
@@ -93,22 +93,40 @@ public class ClientDataProvider {
 		}
 	}
 
-	private List<ClientDto> convertData(List<Map<String, Object>> sourcedata) {
+	private List<ClientDto> convertData(List<Map<String, Object>> sourcedata, String filter) {
 		List<ClientDto> data = new ArrayList<>();
 		if (sourcedata != null) {
 			for (Map<String, Object> d : sourcedata) {
-				data.add(ClientDto.builder()
-						.id((int) d.get("Id"))
-						.cif((String) d.get("cif"))
-						.name((String) d.get("name"))
-						.address((String) d.get("address"))
-						.location((String) d.get("location"))
-						.province((String) d.get("province"))
-						.postalCode((String) d.get("postalCode"))
-						.country((String) d.get("country"))
-						.telephone((String) d.get("telephone"))
-						.email((String) d.get("email"))
-						.build());
+				boolean add = false;
+				if (filter.isEmpty()) {
+					add = true;
+				} else {
+					if ( ( d.get("name") != null && ((String) d.get("name")).contains(filter))
+							|| ( d.get("cif") != null && ((String) d.get("cif")).contains(filter))
+							|| ( d.get("address") != null && ((String) d.get("address")).contains(filter))
+							|| ( d.get("location") != null && ((String) d.get("location")).contains(filter))
+							|| ( d.get("province") != null && ((String) d.get("province")).contains(filter))
+							|| ( d.get("postalCode") != null && ((String) d.get("postalCode")).contains(filter))
+							|| ( d.get("country") != null && ((String) d.get("country")).contains(filter))
+							|| ( d.get("telephone") != null && ((String) d.get("telephone")).contains(filter))
+							|| ( d.get("email") != null && ((String) d.get("email")).contains(filter))) {
+						add = true;
+					}
+				}
+				if (add) {
+					data.add(ClientDto.builder()
+							.id((int) d.get("Id"))
+							.cif((String) d.get("cif"))
+							.name((String) d.get("name"))
+							.address((String) d.get("address"))
+							.location((String) d.get("location"))
+							.province((String) d.get("province"))
+							.postalCode((String) d.get("postalCode"))
+							.country((String) d.get("country"))
+							.telephone((String) d.get("telephone"))
+							.email((String) d.get("email"))
+							.build());
+				}
 			}
 		}
 		return data;
