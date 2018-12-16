@@ -13,7 +13,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
@@ -51,10 +50,6 @@ public class PaginatedTableDecorator<T> {
 		return decorator;
 	}
 
-	public JPanel getContentPanel() {
-		return contentPanel;
-	}
-
 	private void init() {
 		initDataModel();
 		initPaginationComponents();
@@ -76,10 +71,8 @@ public class PaginatedTableDecorator<T> {
 
 	private void initPaginationComponents() {
 		contentPanel = new JPanel(new BorderLayout());
-		contentPanel.add(new JScrollPane(table));
-
 		JPanel paginationPanel = createPaginationPanel();
-		contentPanel.add(paginationPanel, BorderLayout.NORTH);
+		contentPanel.add(paginationPanel, BorderLayout.SOUTH);
 	}
 
 	private JPanel createPaginationPanel() {

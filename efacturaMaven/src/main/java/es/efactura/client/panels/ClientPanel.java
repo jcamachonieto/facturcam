@@ -1,6 +1,5 @@
 package es.efactura.client.panels;
 
-import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,13 +7,20 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.FormSpecs;
+import com.jgoodies.forms.layout.RowSpec;
 
 import es.efactura.client.dialog.ClientDialog;
 import es.efactura.client.model.ClientDataProvider;
@@ -51,23 +57,54 @@ public class ClientPanel extends JPanel {
 	@Autowired
 	ClientRowAction clientRowAction;
 
-	public ClientPanel() {
-		super(new GridLayout(3, 0));
-	}
-
 	public void initialize() {
-		clientDialog.initialize(600, 600);
+		clientDialog.initialize();
 		clientDialog.setVisible(false);
-
-		JButton showDialogButton = new JButton("Añadir");
-		showDialogButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				clientDialog.clearData();
-				clientDialog.setVisible(true);
-			}
-		});
-		add(showDialogButton);
+		
+		setLayout(new FormLayout(new ColumnSpec[] {
+				FormSpecs.BUTTON_COLSPEC,
+				ColumnSpec.decode("256px:grow"),
+				FormSpecs.BUTTON_COLSPEC,
+				FormSpecs.BUTTON_COLSPEC},
+			new RowSpec[] {
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("default:grow"),
+				FormSpecs.UNRELATED_GAP_ROWSPEC,
+				RowSpec.decode("22px:grow"),
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,}));
+		{
+			JLabel findLabel = new JLabel("Buscar");
+			add(findLabel, "1, 2");
+			
+			JTextField findText = new JTextField();
+			add(findText, "2, 2");
+			
+			JButton filterButton = new JButton("Filtrar");
+			add(filterButton, "3, 2");
+			
+			JButton showDialogButton = new JButton("Añadir");
+			showDialogButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					clientDialog.clearData();
+					clientDialog.setVisible(true);
+				}
+			});
+			add(showDialogButton, "4, 2");
+		}
 
 		table = new JTable(clientTable);
 		TableColumn column = table.getColumnModel().getColumn(9);
@@ -93,13 +130,13 @@ public class ClientPanel extends JPanel {
 		});
 
 		// Add the scroll pane to this panel.
-		add(table);
+		add(table, "1, 4, 4, 1, fill, fill");
 
 		paginationDataProvider = createDataProvider();
 		paginatedTableDecorator = PaginatedTableDecorator.decorate(table, paginationDataProvider,
 				new int[] { 10, 20, 50 }, 10);
 
-		add(paginatedTableDecorator.getContentPanel());
+		add(paginatedTableDecorator.getContentPanel(), "1, 6, 4, 1, fill, fill");
 	}
 
 	@SuppressWarnings("unchecked")

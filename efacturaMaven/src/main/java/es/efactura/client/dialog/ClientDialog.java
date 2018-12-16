@@ -1,6 +1,7 @@
 package es.efactura.client.dialog;
 
-import java.awt.GridLayout;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -9,9 +10,15 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.FormSpecs;
+import com.jgoodies.forms.layout.RowSpec;
 
 import es.efactura.client.model.ClientDataProvider;
 import es.efactura.client.model.ClientDto;
@@ -30,82 +37,160 @@ public class ClientDialog extends JDialog {
 
 	@Autowired
 	private ClientDataProvider clientDataProvider;
+	
+	private final JPanel contentPanel = new JPanel();
 
 	JTextField id, name, cif, address, location, province, postalCode, country, telephone, email;
 
-	public void initialize(int width, int height) {
-		setSize(width, height);
+	public void initialize() {
 		setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
 		setLocationRelativeTo(null);
 
 		id = new JTextField();
 		id.setVisible(false);
 
-		name = new JTextField();
-		cif = new JTextField();
-		address = new JTextField();
-		location = new JTextField();
-		province = new JTextField();
-		postalCode = new JTextField();
-		country = new JTextField();
-		telephone = new JTextField();
-		email = new JTextField();
-
-		JPanel panel = new JPanel(new GridLayout(10, 10));
-
-		panel.add(id);
-
-		panel.add(new JLabel("Nombre fiscal:"));
-		panel.add(name);
-
-		panel.add(new JLabel("CIF/NIF:"));
-		panel.add(cif);
-
-		panel.add(new JLabel("Dirección:"));
-		panel.add(address);
+		setBounds(100, 100, 600, 400);
+		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		contentPanel.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("147px"),
+				ColumnSpec.decode("56px:grow"),
+				FormSpecs.LABEL_COMPONENT_GAP_COLSPEC,
+				ColumnSpec.decode("226px"),},
+			new RowSpec[] {
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.UNRELATED_GAP_ROWSPEC,
+				RowSpec.decode("22px"),
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,}));
+		{
+			JLabel lblNewLabel = new JLabel("Nombre");
+			contentPanel.add(lblNewLabel, "1, 2, left, center");
+		}
+		{
+			name = new JTextField();
+			contentPanel.add(name, "2, 2, 3, 1, left, top");
+			name.setColumns(20);
+		}
 		
-		panel.add(new JLabel("Localidad:"));
-		panel.add(location);
+		{
+			JLabel lblNewLabel_1 = new JLabel("Nif/Cif");
+			contentPanel.add(lblNewLabel_1, "1, 4, left, center");
+		}
+		{
+			cif = new JTextField();
+			contentPanel.add(cif, "2, 4, 3, 1, left, top");
+			cif.setColumns(20);
+		}
 		
-		panel.add(new JLabel("Provincia:"));
-		panel.add(province);
+		{
+			JLabel lblNewLabel_1 = new JLabel("Direccion");
+			contentPanel.add(lblNewLabel_1, "1, 6, left, center");
+		}
+		{
+			address = new JTextField();
+			contentPanel.add(address, "2, 6, 2, 1, left, top");
+			address.setColumns(20);
+		}
+		{
+			JLabel lblNewLabel_2 = new JLabel("Localidad");
+			contentPanel.add(lblNewLabel_2, "1, 8, left, center");
+		}
+		{
+			location = new JTextField();
+			contentPanel.add(location, "2, 8, 3, 1, left, top");
+			location.setColumns(20);
+		}
+		{
+			JLabel lblNewLabel_3 = new JLabel("Provincia");
+			contentPanel.add(lblNewLabel_3, "1, 10, left, center");
+		}
+		{
+			province = new JTextField();
+			contentPanel.add(province, "2, 10, 3, 1, left, top");
+			province.setColumns(20);
+		}
+		{
+			JLabel lblNewLabel_4 = new JLabel("Código postal");
+			contentPanel.add(lblNewLabel_4, "1, 12, left, center");
+		}
+		{
+			postalCode = new JTextField();
+			contentPanel.add(postalCode, "2, 12, 3, 1, left, top");
+			postalCode.setColumns(20);
+		}
+		{
+			JLabel lblNewLabel_5 = new JLabel("Pais");
+			contentPanel.add(lblNewLabel_5, "1, 14, left, center");
+		}
+		{
+			country = new JTextField();
+			contentPanel.add(country, "2, 14, 3, 1, left, top");
+			country.setColumns(20);
+		}
+		{
+			JLabel lblNewLabel_6 = new JLabel("Teléfono");
+			contentPanel.add(lblNewLabel_6, "1, 16, left, center");
+		}
+		{
+			telephone = new JTextField();
+			contentPanel.add(telephone, "2, 16, 3, 1, left, top");
+			telephone.setColumns(20);
+		}
+		{
+			JLabel lblNewLabel_7 = new JLabel("Email");
+			contentPanel.add(lblNewLabel_7, "1, 18, left, center");
+		}
+		{
+			email = new JTextField();
+			contentPanel.add(email, "2, 18, 3, 1, left, top");
+			email.setColumns(20);
+		}
 		
-		panel.add(new JLabel("Código postal:"));
-		panel.add(postalCode);
-		
-		panel.add(new JLabel("País:"));
-		panel.add(country);
-		
-		panel.add(new JLabel("Teléfono:"));
-		panel.add(telephone);
-		
-		panel.add(new JLabel("Email:"));
-		panel.add(email);
-
-		JButton saveButton = new JButton("Guardar");
-		saveButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ClientDto client = ClientDto.builder()
-						.id(id.getText().equals("") ? 0 : Integer.parseInt(id.getText()))
-						.name(name.getText())
-						.cif(cif.getText())
-						.address(address.getText())
-						.location(location.getText())
-						.province(province.getText())
-						.postalCode(postalCode.getText())
-						.country(country.getText())
-						.telephone(telephone.getText())
-						.email(email.getText())
-						.build();
-				clientDataProvider.upsert(client);
-				setVisible(false);
-				parent.refresh();
+		{
+			JPanel buttonPane = new JPanel();
+			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			{
+				JButton saveButton = new JButton("Guardar");
+				saveButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						ClientDto client = ClientDto.builder()
+								.id(id.getText().equals("") ? 0 : Integer.parseInt(id.getText()))
+								.name(name.getText())
+								.cif(cif.getText())
+								.address(address.getText())
+								.location(location.getText())
+								.province(province.getText())
+								.postalCode(postalCode.getText())
+								.country(country.getText())
+								.telephone(telephone.getText())
+								.email(email.getText())
+								.build();
+						clientDataProvider.upsert(client);
+						setVisible(false);
+						parent.refresh();
+					}
+				});
+				buttonPane.add(saveButton);
+				getRootPane().setDefaultButton(saveButton);
 			}
-		});
-		panel.add(saveButton);
-
-		add(panel);
+		}
 	}
 
 	public void fillData(ClientDto t) {
