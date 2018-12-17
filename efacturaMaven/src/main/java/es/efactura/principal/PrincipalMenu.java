@@ -10,6 +10,7 @@ import javax.swing.JMenuItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import es.efactura.bill.panels.BillPanel;
 import es.efactura.client.panels.ClientPanel;
 
 @Component
@@ -22,6 +23,9 @@ public class PrincipalMenu extends JMenuBar {
 
 	@Autowired
 	ClientPanel clientPanel;
+	
+	@Autowired
+	BillPanel billPanel;
 
 	protected JFrame content;
 
@@ -31,12 +35,15 @@ public class PrincipalMenu extends JMenuBar {
 	public void initialize(JFrame content) {
 		this.menuClients = new JMenuItem("Clientes");
 		this.menuBills = new JMenuItem("Facturas");
-		this.menuConfiguration = new JMenuItem("Configuraci�n");
+		this.menuConfiguration = new JMenuItem("Configuración");
 
 		this.content = content;
 
 		clientPanel.initialize();
 		clientPanel.setVisible(false);
+		
+		billPanel.initialize();
+		billPanel.setVisible(false);
 
 		ActionListener menuClientsA = new ActionListener() {
 			@Override
@@ -52,7 +59,8 @@ public class PrincipalMenu extends JMenuBar {
 		ActionListener menuBillsA = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// PrincipalMenu.this.content.setContentPane(new BillsPanel());
+				billPanel.setVisible(true);
+				PrincipalMenu.this.content.setContentPane(billPanel);
 				PrincipalMenu.this.content.revalidate();
 			}
 		};
