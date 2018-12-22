@@ -9,5 +9,36 @@
 </head>
 
 <div layout:fragment="page_content" id="page_content">
+
+	<h1>
+		<div>Clientes</div>
+		<div align="right"><button id="add">Añadir</button></div>
+	</h1>
 	
+	<p>
+
+	<table id="clientTable" class="display" style="width:100%">
+
+		<!-- Header Table -->
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Nombre fiscal</th>
+				<th>Cif</th>
+				<th>Dirección</th>
+				<th>Localidad</th>
+				<th>Provincia</th>
+				<th>Código postal</th>
+				<th>País</th>
+				<th>Teléfono</th>
+				<th>Email</th>
+				<th>Acciones</th>
+			</tr>
+		</thead>
+	</table>
+
+</div>
+
+<div layout:fragment="scripts" id="scripts">
+	<script src="/js/clientdatatable.js"></script>
 </div>

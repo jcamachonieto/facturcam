@@ -1,7 +1,6 @@
 package com.efactura.utils;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,24 +13,24 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DataProvider {
 	
-	@Autowired
-	private ResourceLoader resourceLoader;
+	@Value("${database.file}")
+	private String databaseFile;
+
+	@Value("${database.driverManager}")
+	private String driverManager;
 
 	public Connection getConnection() {
 		Connection conn = null;
 		try {
-			final Resource fileResource = resourceLoader.getResource("classpath:efactura.accdb");
-			File f = fileResource.getFile();
-			conn = DriverManager.getConnection("jdbc:ucanaccess://" + f.getAbsolutePath());
-		} catch (SQLException | IOException e) {
+			File f = new File(databaseFile);
+			conn = DriverManager.getConnection(driverManager + f.getAbsolutePath());
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return conn;
