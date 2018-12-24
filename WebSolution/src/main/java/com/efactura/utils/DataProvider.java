@@ -18,17 +18,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DataProvider {
-	
-	@Value("${database.file}")
-	private String databaseFile;
 
-	@Value("${database.driverManager}")
+	@Value("${local.database.driverManager}")
 	private String driverManager;
 
 	public Connection getConnection() {
 		Connection conn = null;
 		try {
-			File f = new File(databaseFile);
+			File f = new File("kk");
 			conn = DriverManager.getConnection(driverManager + f.getAbsolutePath());
 		} catch (SQLException e) {
 			e.printStackTrace();

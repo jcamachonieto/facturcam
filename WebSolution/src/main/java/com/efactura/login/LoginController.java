@@ -1,7 +1,10 @@
 package com.efactura.login;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ResolvableType;
@@ -20,6 +23,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
 
+import com.efactura.user.model.UserEntity;
+import com.efactura.user.model.UserSessionDto;
+import com.efactura.user.service.IUserDataProvider;
+
 @Controller
 public class LoginController {
 
@@ -30,8 +37,12 @@ public class LoginController {
     private ClientRegistrationRepository clientRegistrationRepository;
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
+    
+    @Autowired
+    private IUserDataProvider userDataProvider;
 
-    @GetMapping("/login")
+    @SuppressWarnings("unchecked")
+	@GetMapping("/login")
     public String getLoginPage(Model model) {
         Iterable<ClientRegistration> clientRegistrations = null;
         ResolvableType type = ResolvableType.forInstance(clientRegistrationRepository)
@@ -46,9 +57,9 @@ public class LoginController {
         return "login";
     }
 
-    @GetMapping("/loginSuccess")
-    public String getLoginInfo(Model model, OAuth2AuthenticationToken authentication) {
-
+    @SuppressWarnings("rawtypes")
+	@GetMapping("/loginSuccess")
+    public String getLoginInfo(Model model, OAuth2AuthenticationToken authentication, HttpSession session) {
         OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(), authentication.getName());
 
         String userInfoEndpointUri = client.getClientRegistration()
@@ -66,10 +77,25 @@ public class LoginController {
 
             ResponseEntity<Map> response = restTemplate.exchange(userInfoEndpointUri, HttpMethod.GET, entity, Map.class);
             Map userAttributes = response.getBody();
-            model.addAttribute("name", userAttributes.get("name"));
+            
+            UserEntity user = userDataProvider.findByEmail((String) userAttributes.get("email"));
+            if (user == null) {
+            	model.addAttribute("message", null);
+            	return "redirect:/login";
+            }
+            if (user.getExpirationDate().getTime() < new Date().getTime()) {
+            	model.addAttribute("message", null);
+            	return "redirect:/login";
+            }
+            
+            UserSessionDto userSessionDto = UserSessionDto.builder()
+            		.name((String) userAttributes.get("name"))
+            		.email((String) userAttributes.get("email"))
+            		.build();
+            session.setAttribute("user", userSessionDto);
         }
 
-        return "home";
+        return "redirect:/";
     }
     
     @GetMapping("/loginFailure")
