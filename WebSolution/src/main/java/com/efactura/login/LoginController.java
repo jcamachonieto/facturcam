@@ -32,7 +32,7 @@ import com.efactura.user.service.IUserDataProvider;
 @Controller
 public class LoginController {
 	
-	private static final String TITLE_MESSAGE_ERROR = "Iniciar sesión";
+	private static final String TITLE_MESSAGE = "Iniciar sesión";
 
 	private static final String authorizationRequestBaseUri = "oauth2/authorize-client";
     Map<String, String> oauth2AuthenticationUrls = new HashMap<>();
@@ -85,7 +85,7 @@ public class LoginController {
             UserEntity user = userDataProvider.findByEmail((String) userAttributes.get("email"));
             if (user == null) {
             	model.addAttribute("message", MessageDto.builder()
-            			.title(TITLE_MESSAGE_ERROR)
+            			.title(TITLE_MESSAGE)
             			.text("Usuario no encontrado")
             			.type(MessageConstants.TYPE_ERROR)
             			.build());
@@ -94,7 +94,7 @@ public class LoginController {
             }
             if (user.getExpirationDate().getTime() < new Date().getTime()) {
             	model.addAttribute("message", MessageDto.builder()
-            			.title(TITLE_MESSAGE_ERROR)
+            			.title(TITLE_MESSAGE)
             			.text("Necesita renovar su licencia")
             			.type(MessageConstants.TYPE_ERROR)
             			.build());
@@ -116,7 +116,7 @@ public class LoginController {
     @GetMapping("/loginFailure")
     public String getLoginInfo(Model model) {
     	model.addAttribute("message", MessageDto.builder()
-    			.title(TITLE_MESSAGE_ERROR)
+    			.title(TITLE_MESSAGE)
     			.text(MessageConstants.GENERIC_TEXT_ERROR)
     			.type(MessageConstants.TYPE_ERROR)
     			.build());

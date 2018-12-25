@@ -1,5 +1,6 @@
+var table;
 $(document).ready( function () {
-	 var table = $('#clientTable').DataTable({
+	 table = $('#clientTable').DataTable({
 			"sAjaxSource": "/client/list",
 			"sAjaxDataProp": "",
 			"order": [[ 0, "asc" ]],
@@ -64,14 +65,45 @@ function edit(data) {
 function remove(data) {
 	$.confirm({
 	    title: 'Eliminar cliente',
-	    content: '¿ Desea eliminar el registro ' + data['name'] + '?',
+	    content: '¿ Desea eliminar el cliente ' + data['name'] + '?',
 	    buttons: {
 	    	Cancelar: function () {
 	        },
 	        Eliminar: {
 	        	btnClass: 'btn-red',
 	        	action: function () {
-	        		
+	        		$.ajax({
+	                    type: 'DELETE',
+	                    url: '/client/' + data['id'],
+	                    cache: false,
+	                    success: function(data) {
+	                    	$.confirm({
+	                		    title: data.title,
+	                		    content: data.text,
+	                		    type: data.type,
+	                		    typeAnimated: true,
+	                		    autoClose: 'cerrar|8000',
+	                		    buttons: {
+	                		        cerrar: function () {
+	                		        }
+	                		    }
+	                		});
+	                    	table.ajax.reload( null, false );
+	                    },
+	                    error: function(data) {
+	                    	$.confirm({
+	                		    title: data.title,
+	                		    content: data.text,
+	                		    type: data.type,
+	                		    typeAnimated: true,
+	                		    autoClose: 'cerrar|8000',
+	                		    buttons: {
+	                		        cerrar: function () {
+	                		        }
+	                		    }
+	                		});
+	                    }
+	                })
 	        	}
 	        }
 	    }
