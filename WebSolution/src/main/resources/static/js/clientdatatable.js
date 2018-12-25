@@ -113,14 +113,16 @@ function remove(data) {
 function showDialog(title) {
 	$.confirm({
 	    title: title,
-	    content: 'kkkkk',
+	    content: function(){
+            return $('#dialog').html(); 
+        },
 	    buttons: {
 	    	Cancelar: function () {
 	        },
 	        Guardar: {
 	        	btnClass: 'btn-green',
 	        	action: function () {
-	        		
+	        		$("#dialogForm").submit();
 	        	}
 	        }
 	    }

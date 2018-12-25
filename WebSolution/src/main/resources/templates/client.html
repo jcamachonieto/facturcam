@@ -37,6 +37,12 @@
 		</thead>
 	</table>
 
+	<div id="dialog" style="visibility: hidden;">
+		<form id="dialogForm" action="#" th:action="@{/client}" th:object="${client}" method="post">
+    	<p>Nombre: <input type="text" th:field="*{name}" /></p>
+    </form>
+	</div>
+
 </div>
 
 <div layout:fragment="scripts" id="scripts">
