@@ -7,10 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.efactura.client.model.ClientDto;
+import com.efactura.user.model.UserSessionDto;
 import com.efactura.utils.DataProvider;
 
 @Component
@@ -18,12 +21,16 @@ public class ClientDataProvider {
 
 	@Autowired
 	DataProvider dataProvider;
+	
+	@Autowired
+	HttpSession session;
 
 	public List<ClientDto> getList() {
 		Connection conn = null;
 		List<Map<String, Object>> data = null;
 		try {
-			conn = dataProvider.getConnection();
+			UserSessionDto user = (UserSessionDto) session.getAttribute("user");
+			conn = dataProvider.getConnection(user.getDatabaseFile());
 			data = dataProvider.getData(conn, "SELECT * FROM Client");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -37,7 +44,8 @@ public class ClientDataProvider {
 		Connection conn = null;
 		String query = null;
 		try {
-			conn = dataProvider.getConnection();
+			UserSessionDto user = (UserSessionDto) session.getAttribute("user");
+			conn = dataProvider.getConnection(user.getDatabaseFile());
 
 			List<Object> params = new ArrayList<Object>();
 
@@ -79,7 +87,8 @@ public class ClientDataProvider {
 	public void delete(int id) {
 		Connection conn = null;
 		try {
-			conn = dataProvider.getConnection();
+			UserSessionDto user = (UserSessionDto) session.getAttribute("user");
+			conn = dataProvider.getConnection(user.getDatabaseFile());
 
 			String query = "DELETE FROM Client WHERE [Id] = ?";
 
@@ -112,7 +121,8 @@ public class ClientDataProvider {
 		Connection conn = null;
 		List<Map<String, Object>> data = null;
 		try {
-			conn = dataProvider.getConnection();
+			UserSessionDto user = (UserSessionDto) session.getAttribute("user");
+			conn = dataProvider.getConnection(user.getDatabaseFile());
 			PreparedStatement statement = conn.prepareStatement("SELECT * FROM Client WHERE [cif] = ?");
 			statement.setString(1, client.getCif());
 			data = dataProvider.getData(conn, statement);

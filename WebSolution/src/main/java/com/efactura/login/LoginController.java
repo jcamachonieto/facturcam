@@ -23,12 +23,16 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
 
+import com.efactura.message.model.MessageConstants;
+import com.efactura.message.model.MessageDto;
 import com.efactura.user.model.UserEntity;
 import com.efactura.user.model.UserSessionDto;
 import com.efactura.user.service.IUserDataProvider;
 
 @Controller
 public class LoginController {
+	
+	private static final String TITLE_MESSAGE_ERROR = "Iniciar sesión";
 
 	private static final String authorizationRequestBaseUri = "oauth2/authorize-client";
     Map<String, String> oauth2AuthenticationUrls = new HashMap<>();
@@ -80,17 +84,28 @@ public class LoginController {
             
             UserEntity user = userDataProvider.findByEmail((String) userAttributes.get("email"));
             if (user == null) {
-            	model.addAttribute("message", null);
-            	return "redirect:/login";
+            	model.addAttribute("message", MessageDto.builder()
+            			.title(TITLE_MESSAGE_ERROR)
+            			.text("Usuario no encontrado")
+            			.type(MessageConstants.TYPE_ERROR)
+            			.build());
+            	session.invalidate();
+            	return getLoginInfo(model);
             }
             if (user.getExpirationDate().getTime() < new Date().getTime()) {
-            	model.addAttribute("message", null);
-            	return "redirect:/login";
+            	model.addAttribute("message", MessageDto.builder()
+            			.title(TITLE_MESSAGE_ERROR)
+            			.text("Necesita renovar su licencia")
+            			.type(MessageConstants.TYPE_ERROR)
+            			.build());
+            	session.invalidate();
+            	return getLoginInfo(model);
             }
             
             UserSessionDto userSessionDto = UserSessionDto.builder()
             		.name((String) userAttributes.get("name"))
             		.email((String) userAttributes.get("email"))
+            		.databaseFile(user.getDatabaseFile())
             		.build();
             session.setAttribute("user", userSessionDto);
         }
@@ -100,6 +115,11 @@ public class LoginController {
     
     @GetMapping("/loginFailure")
     public String getLoginInfo(Model model) {
+    	model.addAttribute("message", MessageDto.builder()
+    			.title(TITLE_MESSAGE_ERROR)
+    			.text(MessageConstants.GENERIC_TEXT_ERROR)
+    			.type(MessageConstants.TYPE_ERROR)
+    			.build());
         return getLoginPage(model);
     }
 }

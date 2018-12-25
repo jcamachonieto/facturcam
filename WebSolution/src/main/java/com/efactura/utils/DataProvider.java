@@ -22,10 +22,10 @@ public class DataProvider {
 	@Value("${local.database.driverManager}")
 	private String driverManager;
 
-	public Connection getConnection() {
+	public Connection getConnection(String databaseFile) {
 		Connection conn = null;
 		try {
-			File f = new File("kk");
+			File f = new File(databaseFile);
 			conn = DriverManager.getConnection(driverManager + f.getAbsolutePath());
 		} catch (SQLException e) {
 			e.printStackTrace();

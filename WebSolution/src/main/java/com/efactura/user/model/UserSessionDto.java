@@ -8,4 +8,5 @@ import lombok.Getter;
 public class UserSessionDto {
 	private String name;
 	private String email;
+	private String databaseFile;
 }
