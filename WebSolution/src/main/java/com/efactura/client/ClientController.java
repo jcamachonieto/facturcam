@@ -2,6 +2,8 @@ package com.efactura.client;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,7 +53,7 @@ public class ClientController {
 	}
 
 	@PostMapping("/client")
-	public ModelAndView createClient(Model model, @ModelAttribute ClientDto client) {
+	public ModelAndView createClient(@ModelAttribute("client") @Valid ClientDto client, Model model) {
 		clientDataProvider.upsert(client);
 		model.addAttribute("message",
 				MessageDto.builder().text("Cliente creado correctamente").type(MessageConstants.TYPE_SUCCESS).build());
