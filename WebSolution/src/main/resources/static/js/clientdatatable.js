@@ -60,12 +60,16 @@ $(document)
 						var data = table.row($(this).parents('tr')).data();
 						if (this.id === 'edit') {
 							$("#modalFormLabel").text("Editar cliente");
-							$.ajax({
-							    type: "GET",
-							    url: "/client/" + data['id'],
-							    success: function (data) {
-							    }
-							});
+							$("#modalForm #id").val(data['id']);
+							$("#modalForm #name").val(data['name']);
+							$("#modalForm #cif").val(data['cif']);
+							$("#modalForm #address").val(data['address']);
+							$("#modalForm #location").val(data['location']);
+							$("#modalForm #province").val(data['province']);
+							$("#modalForm #postalCode").val(data['postalCode']);
+							$("#modalForm #country").val(data['country']);
+							$("#modalForm #telephone").val(data['telephone']);
+							$("#modalForm #email").val(data['email']);
 						} else {
 							remove(data);
 						}
