@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ClientDto {
+public class ClientEntity {
 
 	private int id;
 	
@@ -41,11 +41,11 @@ public class ClientDto {
 	private String email;
 	
 
-	public ClientDto() {
+	public ClientEntity() {
 		super();
 	}
 	
-	public ClientDto(int id, @NotNull String name, @NotNull String cif, @NotNull String address,
+	public ClientEntity(int id, @NotNull String name, @NotNull String cif, @NotNull String address,
 			@NotNull String location, @NotNull String province, @NotNull String postalCode, @NotNull String country,
 			@NotNull String telephone, @NotNull @Email String email) {
 		super();

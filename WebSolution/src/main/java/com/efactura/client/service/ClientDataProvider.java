@@ -12,8 +12,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.efactura.client.model.ClientDto;
-import com.efactura.user.model.UserSessionDto;
+import com.efactura.client.model.ClientEntity;
+import com.efactura.user.model.UserEntity;
 import com.efactura.utils.DataProvider;
 
 @Component
@@ -25,11 +25,11 @@ public class ClientDataProvider {
 	@Autowired
 	HttpSession session;
 
-	public List<ClientDto> getList() {
+	public List<ClientEntity> getList() {
 		Connection conn = null;
 		List<Map<String, Object>> data = null;
 		try {
-			UserSessionDto user = (UserSessionDto) session.getAttribute("user");
+			UserEntity user = (UserEntity) session.getAttribute("user");
 			conn = dataProvider.getConnection(user.getDatabaseFile());
 			data = dataProvider.getData(conn, "SELECT * FROM Client");
 		} catch (SQLException e) {
@@ -40,11 +40,11 @@ public class ClientDataProvider {
 		return convertData(data);
 	}
 
-	public void upsert(ClientDto data) {
+	public void upsert(ClientEntity data) {
 		Connection conn = null;
 		String query = null;
 		try {
-			UserSessionDto user = (UserSessionDto) session.getAttribute("user");
+			UserEntity user = (UserEntity) session.getAttribute("user");
 			conn = dataProvider.getConnection(user.getDatabaseFile());
 
 			List<Object> params = new ArrayList<Object>();
@@ -87,7 +87,7 @@ public class ClientDataProvider {
 	public void delete(int id) {
 		Connection conn = null;
 		try {
-			UserSessionDto user = (UserSessionDto) session.getAttribute("user");
+			UserEntity user = (UserEntity) session.getAttribute("user");
 			conn = dataProvider.getConnection(user.getDatabaseFile());
 
 			String query = "DELETE FROM Client WHERE [Id] = ?";
@@ -103,11 +103,11 @@ public class ClientDataProvider {
 		}
 	}
 
-	private List<ClientDto> convertData(List<Map<String, Object>> sourcedata) {
-		List<ClientDto> data = new ArrayList<>();
+	private List<ClientEntity> convertData(List<Map<String, Object>> sourcedata) {
+		List<ClientEntity> data = new ArrayList<>();
 		if (sourcedata != null) {
 			for (Map<String, Object> d : sourcedata) {
-				data.add(ClientDto.builder().id((int) d.get("Id")).cif((String) d.get("cif"))
+				data.add(ClientEntity.builder().id((int) d.get("Id")).cif((String) d.get("cif"))
 						.name((String) d.get("name")).address((String) d.get("address"))
 						.location((String) d.get("location")).province((String) d.get("province"))
 						.postalCode((String) d.get("postalCode")).country((String) d.get("country"))
@@ -117,11 +117,11 @@ public class ClientDataProvider {
 		return data;
 	}
 
-	public boolean exists(ClientDto client) {
+	public boolean exists(ClientEntity client) {
 		Connection conn = null;
 		List<Map<String, Object>> data = null;
 		try {
-			UserSessionDto user = (UserSessionDto) session.getAttribute("user");
+			UserEntity user = (UserEntity) session.getAttribute("user");
 			conn = dataProvider.getConnection(user.getDatabaseFile());
 			PreparedStatement statement = conn.prepareStatement("SELECT * FROM Client WHERE [cif] = ?");
 			statement.setString(1, client.getCif());

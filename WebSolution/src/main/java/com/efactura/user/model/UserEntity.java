@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +23,11 @@ import lombok.Setter;
 public class UserEntity {
 
 	@Id
+	@Email
 	private String email;
+	
+	@Column
+	private Date createDate;
 	
 	@Column
 	private Date expirationDate;
@@ -31,5 +37,32 @@ public class UserEntity {
 	
 	@Column
 	private String databaseFile;
+	
+	@Column
+	private String logo;
+	
+	@NotNull
+	private String name;
+	
+	@NotNull
+	private String cif;
+	
+	@NotNull
+	private String address;
+	
+	@NotNull
+	private String location;
+	
+	@NotNull
+	private String province;
+	
+	@NotNull
+	private String postalCode;
+	
+	@NotNull
+	private String country;
+	
+	@NotNull
+	private String telephone;
 
 }

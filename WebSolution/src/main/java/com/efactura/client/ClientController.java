@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.efactura.client.model.ClientDto;
+import com.efactura.client.model.ClientEntity;
 import com.efactura.client.service.ClientDataProvider;
 import com.efactura.message.model.MessageConstants;
 import com.efactura.message.model.MessageDto;
@@ -24,19 +24,17 @@ import com.efactura.message.model.MessageDto;
 @RestController
 public class ClientController {
 
-	private static final String TITLE_MESSAGE = "Cliente";
-
 	@Autowired
 	private ClientDataProvider clientDataProvider;
 
 	@GetMapping("/client")
 	public ModelAndView homePage(Model model) {
-		model.addAttribute("client", ClientDto.builder().build());
+		model.addAttribute("client", ClientEntity.builder().build());
 		return new ModelAndView("client");
 	}
 
 	@RequestMapping(path = "/client/list", method = RequestMethod.GET)
-	public List<ClientDto> list(Model model) {
+	public List<ClientEntity> list(Model model) {
 		return clientDataProvider.getList();
 	}
 
@@ -53,7 +51,7 @@ public class ClientController {
 	}
 
 	@PostMapping("/client")
-	public ModelAndView createClient(@ModelAttribute("client") @Valid ClientDto client, Model model) {
+	public ModelAndView createClient(@ModelAttribute("client") @Valid ClientEntity client, Model model) {
 		clientDataProvider.upsert(client);
 		model.addAttribute("message",
 				MessageDto.builder().text("Cliente creado correctamente").type(MessageConstants.TYPE_SUCCESS).build());

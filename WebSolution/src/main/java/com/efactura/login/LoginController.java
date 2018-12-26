@@ -26,7 +26,6 @@ import org.springframework.web.client.RestTemplate;
 import com.efactura.message.model.MessageConstants;
 import com.efactura.message.model.MessageDto;
 import com.efactura.user.model.UserEntity;
-import com.efactura.user.model.UserSessionDto;
 import com.efactura.user.service.IUserDataProvider;
 
 @Controller
@@ -102,12 +101,7 @@ public class LoginController {
             	return getLoginInfo(model);
             }
             
-            UserSessionDto userSessionDto = UserSessionDto.builder()
-            		.name((String) userAttributes.get("name"))
-            		.email((String) userAttributes.get("email"))
-            		.databaseFile(user.getDatabaseFile())
-            		.build();
-            session.setAttribute("user", userSessionDto);
+            session.setAttribute("user", user);
         }
 
         return "redirect:/";

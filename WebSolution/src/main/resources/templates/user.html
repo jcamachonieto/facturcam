@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/shared/layout}">
+
+<head>
+<title>Configuración</title>
+</head>
+
+<div layout:fragment="page_content" id="page_content">
+
+	<h1>
+		<div>
+			<div style="float: left">Configuración</div>
+		</div>
+	</h1>
+
+
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<form id="modalForm" action="#" th:action="@{/user}"
+				th:object="${user}" method="post">
+
+
+				<!-- Modal Body -->
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="email" class="cols-sm-2 control-label">Email</label>
+						<div class="cols-sm-10">
+							<div class="input-group">
+								<input type="text" class="form-control" th:required="required"
+									th:field="*{email}" placeholder="Email" />
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="databaseFile" class="cols-sm-2 control-label">Database</label>
+						<div class="cols-sm-10">
+							<div class="input-group">
+								<input type="text" class="form-control" th:required="required"
+									th:field="*{databaseFile}" placeholder="" />
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="logo" class="cols-sm-2 control-label">Logo</label>
+						<div class="cols-sm-10">
+							<div class="input-group">
+								<input type="file" class="form-control" th:required="required"
+									th:field="*{logo}" placeholder="" />
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">Nombre
+								fiscal</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<input type="text" class="form-control" th:required="required"
+										th:field="*{name}" placeholder="Nombre fiscal" />
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">Nif/Cif</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<input type="text" class="form-control" th:required="required"
+										th:field="*{cif}" placeholder="Nif/Cif" />
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">Dirección</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<input type="text" class="form-control" th:required="required"
+										th:field="*{address}" placeholder="Dirección" />
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">Localidad</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<input type="text" class="form-control" th:required="required"
+										th:field="*{location}" placeholder="Localidad" />
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">Provincia</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<input type="text" class="form-control" th:required="required"
+										th:field="*{province}" placeholder="Provincia" />
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">Código
+								postal</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<input type="text" class="form-control" th:required="required"
+										th:field="*{postalCode}" placeholder="Código postal" />
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">País</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<input type="text" class="form-control" th:required="required"
+										th:field="*{country}" placeholder="País" />
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">Teléfono</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<input type="text" class="form-control" th:required="required"
+										th:field="*{telephone}" placeholder="Teléfono" />
+								</div>
+							</div>
+						</div>
+
+				</div>
+
+				<!-- Modal Footer -->
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary">Guardar</button>
+				</div>
+
+			</form>
+
+		</div>
+	</div>
+
+
+</div>
+
+<div layout:fragment="scripts" id="scripts">
+</div>
