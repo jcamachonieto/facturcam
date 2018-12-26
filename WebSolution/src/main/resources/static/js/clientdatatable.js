@@ -38,7 +38,7 @@ $(document)
 												{
 													"targets" : 10,
 													"data" : null,
-													"defaultContent" : "<button id='edit'>Editar</button> <button id='delete'>Eliminar</button>"
+													"defaultContent" : "<button id='edit' data-toggle='modal' data-target='#modalForm' class='btn btn-secundary'>Editar</button> <button id='delete' class='btn btn-secundary'>Eliminar</button>"
 												} ],
 										"language" : {
 											"lengthMenu" : "Mostrar _MENU_ datos por pagina.",
@@ -59,7 +59,13 @@ $(document)
 					$('#clientTable tbody').on('click', 'button', function() {
 						var data = table.row($(this).parents('tr')).data();
 						if (this.id === 'edit') {
-							edit(data);
+							$("#modalFormLabel").text("Editar cliente");
+							$.ajax({
+							    type: "GET",
+							    url: "/client/" + data['id'],
+							    success: function (data) {
+							    }
+							});
 						} else {
 							remove(data);
 						}
