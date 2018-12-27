@@ -35,12 +35,6 @@ public class UserEntity {
 	@Column
 	private boolean trial;
 	
-	@Column
-	private String databaseFile;
-	
-	@Column
-	private String logo;
-	
 	@NotNull
 	private String name;
 	

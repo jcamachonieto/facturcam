@@ -7,14 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.efactura.client.model.ClientEntity;
-import com.efactura.user.model.UserEntity;
 import com.efactura.utils.DataProvider;
+import com.efactura.utils.FileUtils;
 
 @Component
 public class ClientDataProvider {
@@ -23,14 +21,13 @@ public class ClientDataProvider {
 	DataProvider dataProvider;
 	
 	@Autowired
-	HttpSession session;
+	FileUtils fileUtils;
 
 	public List<ClientEntity> getList() {
 		Connection conn = null;
 		List<Map<String, Object>> data = null;
 		try {
-			UserEntity user = (UserEntity) session.getAttribute("user");
-			conn = dataProvider.getConnection(user.getDatabaseFile());
+			conn = dataProvider.getConnection(fileUtils.getDatabaseFile());
 			data = dataProvider.getData(conn, "SELECT * FROM Client");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -44,8 +41,7 @@ public class ClientDataProvider {
 		Connection conn = null;
 		String query = null;
 		try {
-			UserEntity user = (UserEntity) session.getAttribute("user");
-			conn = dataProvider.getConnection(user.getDatabaseFile());
+			conn = dataProvider.getConnection(fileUtils.getDatabaseFile());
 
 			List<Object> params = new ArrayList<Object>();
 
@@ -87,8 +83,7 @@ public class ClientDataProvider {
 	public void delete(int id) {
 		Connection conn = null;
 		try {
-			UserEntity user = (UserEntity) session.getAttribute("user");
-			conn = dataProvider.getConnection(user.getDatabaseFile());
+			conn = dataProvider.getConnection(fileUtils.getDatabaseFile());
 
 			String query = "DELETE FROM Client WHERE [Id] = ?";
 
@@ -121,8 +116,7 @@ public class ClientDataProvider {
 		Connection conn = null;
 		List<Map<String, Object>> data = null;
 		try {
-			UserEntity user = (UserEntity) session.getAttribute("user");
-			conn = dataProvider.getConnection(user.getDatabaseFile());
+			conn = dataProvider.getConnection(fileUtils.getDatabaseFile());
 			PreparedStatement statement = conn.prepareStatement("SELECT * FROM Client WHERE [cif] = ?");
 			statement.setString(1, client.getCif());
 			data = dataProvider.getData(conn, statement);
