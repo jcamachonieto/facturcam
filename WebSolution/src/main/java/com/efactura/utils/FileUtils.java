@@ -66,7 +66,6 @@ public class FileUtils {
 		UserEntity user = (UserEntity) session.getAttribute("user");
 		String path = logoPath + user.getEmail() + LOGO_EXTENSION;
 		File logoFile = new File(path);
-		System.out.println(path);
 		if (logoFile.exists()) {
 			return Files.readAllBytes(logoFile.toPath());
 		}
