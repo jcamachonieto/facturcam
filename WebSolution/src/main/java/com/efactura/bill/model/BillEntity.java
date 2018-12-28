@@ -4,8 +4,6 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
-import com.efactura.client.model.ClientEntity;
-
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,10 +14,9 @@ public class BillEntity {
 	private int id;
 	
 	@NotNull
-	private ClientEntity client;
+	private Integer idClient;
 	
-	@NotNull
-	private Integer number;
+	private Long number;
 
 	@NotNull
 	private Date broadCast;
@@ -27,7 +24,6 @@ public class BillEntity {
 	@NotNull
 	private Date expiration;
 	
-	@NotNull
 	private Integer year;
 	
 	@NotNull
@@ -37,11 +33,11 @@ public class BillEntity {
 		super();
 	}
 	
-	public BillEntity(int id, @NotNull ClientEntity client, @NotNull Integer number, @NotNull Date broadCast, @NotNull Date expiration,
-			@NotNull Integer year, @NotNull Integer tax) {
+	public BillEntity(int id, @NotNull Integer idClient, Long number, @NotNull Date broadCast, @NotNull Date expiration,
+			Integer year, @NotNull Integer tax) {
 		super();
 		this.id = id;
-		this.client = client;
+		this.idClient = idClient;
 		this.number = number;
 		this.broadCast = broadCast;
 		this.expiration = expiration;

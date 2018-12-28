@@ -140,7 +140,7 @@ function activeAddConcept() {
 
 function clearForm() {
 	$(':input','#modalForm')
-	  .not(':button, :submit, :reset')
+	  .not(':button, :submit, :reset, :hidden')
 	  .val('')
 	  .prop('checked', false)
 	  .prop('selected', false);

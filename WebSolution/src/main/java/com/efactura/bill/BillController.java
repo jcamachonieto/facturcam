@@ -1,8 +1,7 @@
 package com.efactura.bill;
 
+import java.util.Calendar;
 import java.util.List;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -56,7 +55,10 @@ public class BillController {
 	}
 
 	@PostMapping("/bill")
-	public ModelAndView createBill(@ModelAttribute("bill") @Valid BillEntity bill, Model model) {
+	public ModelAndView createBill(@ModelAttribute("bill") BillEntity bill, Model model) {
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		bill.setYear(year);
+		bill.setNumber(billDataProvider.countByYear(year) + 1);
 		billDataProvider.upsert(bill);
 		model.addAttribute("message",
 				MessageDto.builder().text("Factura creada correctamente").type(MessageConstants.TYPE_SUCCESS).build());

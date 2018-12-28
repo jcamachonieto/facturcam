@@ -5,7 +5,7 @@
 	layout:decorate="~{/shared/layout}">
 
 <head>
-<title>Clientes</title>
+<title>Facturas</title>
 </head>
 
 <div layout:fragment="page_content" id="page_content">
@@ -24,7 +24,7 @@
 		aria-labelledby="modalFormLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form id="modalForm" action="#" th:action="@{/client}"
+				<form id="modalForm" action="#" th:action="@{/bill}"
 					th:object="${bill}" method="post">
 
 					<!-- Modal Header -->
@@ -37,13 +37,12 @@
 
 					<!-- Modal Body -->
 					<div class="modal-body">
-						<input type="hidden" class="form-control"
-										th:field="*{id}"/>
+						<input type="hidden" class="form-control" th:field="*{id}"/>
 						<div class="form-group">
 							<label for="name" class="cols-sm-2 control-label">Cliente</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
-									<select th:field="*{client}" class="form-control" th:required="required">
+									<select th:field="*{idClient}" class="form-control" th:required="required">
 										<option value="">Seleccione una opción</option>
 										<option th:each="client : ${clients}"
 							                th:value="${client.id}"
