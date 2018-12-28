@@ -87,7 +87,7 @@
 							<label for="description" class="cols-sm-2 control-label">Descripción</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
-									<input type="text" class="form-control" id="description" placeholder="Descripción" />
+									<input type="text" class="form-control" id="description" placeholder="Descripción" onchange="activeAddConcept()"/>
 								</div>
 							</div>
 						</div>
@@ -95,7 +95,7 @@
 							<label for="taxBase" class="cols-sm-2 control-label">Base Imponible</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
-									<input type="text" class="form-control" id="taxBase" placeholder="Base Imponible" />
+									<input type="text" class="form-control" id="taxBase" placeholder="Base Imponible" onchange="activeAddConcept()"/>
 								</div>
 							</div>
 						</div>
@@ -103,8 +103,14 @@
 							<label for="quantity" class="cols-sm-2 control-label">Cantidad</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
-									<input type="text" class="form-control" id="quantity" placeholder="Cantidad" />
+									<input type="text" class="form-control" id="quantity" placeholder="Cantidad" onchange="activeAddConcept()"/>
 								</div>
+							</div>
+						</div>
+						
+						<div class="btn-toolbar">
+ 								<div class="btn-group">
+ 									<button id="addConcept" class="btn btn-info" disabled>Añadir</button>
 							</div>
 						</div>
 						
@@ -113,8 +119,8 @@
 						        <thead>
 						            <tr>
 						                <th>Descripción</th>
-						                <th>Cantidad</th>
 						                <th>Base Imponible</th>
+						                <th>Cantidad</th>
 						                <th>Acciones</th>
 						            </tr>
 						        </thead>

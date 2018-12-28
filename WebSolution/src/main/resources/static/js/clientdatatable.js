@@ -95,7 +95,7 @@ function remove(data) {
 	$.confirm({
 		title : 'Eliminar cliente',
 		closeIcon: true,
-		content : '¿ Desea eliminar el cliente ' + data['name'] + '?',
+		content : '¿ Desea eliminar ' + data['name'] + '?',
 		buttons : {
 			Eliminar : {
 				btnClass : 'btn-red',

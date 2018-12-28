@@ -1,4 +1,5 @@
 var table;
+var tableConcepts;
 
 $(document)
 		.ready(
@@ -70,11 +71,72 @@ $(document)
 					$('#broadCast').datepicker({    
 					    todayHighlight: true
 					});
+					
 					$('#expiration').datepicker({    
 					    todayHighlight: true
 					});
 					
+					$('#addConcept').on('click', function() {
+						tableConcepts.row.add( {
+					        "description": $("#description").val(),
+					        "taxBase": $("#taxBase").val(),
+					        "quantity": $("#quantity").val()
+					    } ).draw();
+						$("#description").val("");
+						$("#taxBase").val("");
+						$("#quantity").val("");
+						$('#addConcept').prop("disabled", true);
+					});
+					
+					tableConcepts = $('#concepts').DataTable({
+						"aoColumns" : [ {
+							"mData" : "description"
+						}, {
+							"mData" : "taxBase"
+						}, {
+							"mData" : "quantity"
+						} ],
+				        "columnDefs": [ {
+				            "targets": 3,
+				            "data": null,
+				            "defaultContent" : "<button id='delete' class='btn btn-secundary btn-red'>Eliminar</button>"
+				        } ],
+				        "paging":   false,
+				        "ordering": false,
+				        "info":     false,
+				        "searching": false
+				    });
+					
+					$('#concepts tbody').on('click', 'button', function() {
+						var row = tableConcepts.row($(this).parents('tr'));
+						var data = row.data();
+						$.confirm({
+							title : 'Eliminar concepto',
+							closeIcon: true,
+							content : '¿ Desea eliminar ' + data['description'] + '?',
+							buttons : {
+								Cancelar: {},
+								Eliminar : {
+									btnClass : 'btn-red',
+									action : function() {
+										row.remove().draw( false );
+									}
+								}
+							}
+						});
+					});
+					
 				});
+
+function activeAddConcept() {
+	if ($("#description").val() != ""
+		&& $("#taxBase").val() != ""
+		&& $("#quantity").val() != "") {
+		$('#addConcept').prop("disabled", false);
+	} else {
+		$('#addConcept').prop("disabled", true);
+	}
+}
 
 function clearForm() {
 	$(':input','#modalForm')
@@ -88,7 +150,7 @@ function remove(data) {
 	$.confirm({
 		title : 'Eliminar factura',
 		closeIcon: true,
-		content : '¿ Desea eliminar la factura ' + data['number'] + '?',
+		content : '¿ Desea eliminar ' + data['number'] + '?',
 		buttons : {
 			Eliminar : {
 				btnClass : 'btn-red',
