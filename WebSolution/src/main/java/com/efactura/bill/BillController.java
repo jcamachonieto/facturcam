@@ -1,4 +1,4 @@
-package com.efactura.client;
+package com.efactura.bill;
 
 import java.util.List;
 
@@ -16,45 +16,50 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.efactura.client.model.ClientEntity;
-import com.efactura.client.service.ClientDataProvider;
+import com.efactura.bill.model.BillEntity;
+import com.efactura.bill.service.BillDataProvider;
+import com.efactura.client.ClientController;
 import com.efactura.message.model.MessageConstants;
 import com.efactura.message.model.MessageDto;
 
 @RestController
-public class ClientController {
+public class BillController {
 
 	@Autowired
-	private ClientDataProvider clientDataProvider;
+	private BillDataProvider billDataProvider;
+	
+	@Autowired
+	private ClientController clientController;
 
-	@GetMapping("/client")
+	@GetMapping("/bill")
 	public ModelAndView homePage(Model model) {
-		model.addAttribute("client", ClientEntity.builder().build());
-		return new ModelAndView("client");
+		model.addAttribute("bill", BillEntity.builder().build());
+		model.addAttribute("clients", clientController.list(model));
+		return new ModelAndView("bill");
 	}
 
-	@RequestMapping(path = "/client/list", method = RequestMethod.GET)
-	public List<ClientEntity> list(Model model) {
-		return clientDataProvider.getList();
+	@RequestMapping(path = "/bill/list", method = RequestMethod.GET)
+	public List<BillEntity> list(Model model) {
+		return billDataProvider.getList();
 	}
 
-	@DeleteMapping(value = "/client/{id}")
-	public MessageDto deleteClient(@PathVariable int id) {
+	@DeleteMapping(value = "/bill/{id}")
+	public MessageDto deleteBill(@PathVariable int id) {
 		try {
-			clientDataProvider.delete(id);
+			billDataProvider.delete(id);
 			return MessageDto.builder().text("Cliente eliminado correctamente").type(MessageConstants.TYPE_SUCCESS)
 					.build();
 		} catch (Exception e) {
-			return MessageDto.builder().text("Se ha producido un error al eliminar el cliente")
+			return MessageDto.builder().text("Se ha producido un error al eliminar la factura")
 					.type(MessageConstants.TYPE_ERROR).build();
 		}
 	}
 
-	@PostMapping("/client")
-	public ModelAndView createClient(@ModelAttribute("client") @Valid ClientEntity client, Model model) {
-		clientDataProvider.upsert(client);
+	@PostMapping("/bill")
+	public ModelAndView createBill(@ModelAttribute("bill") @Valid BillEntity bill, Model model) {
+		billDataProvider.upsert(bill);
 		model.addAttribute("message",
-				MessageDto.builder().text("Cliente creado correctamente").type(MessageConstants.TYPE_SUCCESS).build());
+				MessageDto.builder().text("Factura creada correctamente").type(MessageConstants.TYPE_SUCCESS).build());
 		return homePage(model);
 	}
 }

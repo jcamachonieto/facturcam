@@ -1,33 +1,18 @@
 var table;
+
 $(document)
 		.ready(
 				function() {
-					table = $('#clientTable')
+					table = $('#billTable')
 							.DataTable(
 									{
-										"sAjaxSource" : "/client/list",
+										"sAjaxSource" : "/bill/list",
 										"sAjaxDataProp" : "",
 										"order" : [ [ 0, "asc" ] ],
 										"aoColumns" : [ {
 											"mData" : "id"
 										}, {
-											"mData" : "name"
-										}, {
-											"mData" : "cif"
-										}, {
-											"mData" : "address"
-										}, {
-											"mData" : "location"
-										}, {
-											"mData" : "province"
-										}, {
-											"mData" : "postalCode"
-										}, {
-											"mData" : "country"
-										}, {
-											"mData" : "telephone"
-										}, {
-											"mData" : "email"
+											"mData" : "number"
 										} ],
 										"dom" : '<"top"if>rt<"bottom"lp><"clear">',
 										"columnDefs" : [
@@ -36,7 +21,7 @@ $(document)
 													"visible" : false
 												},
 												{
-													"targets" : 10,
+													"targets" : 2,
 													"data" : null,
 													"defaultContent" : "<button id='edit' data-toggle='modal' data-target='#modalForm' class='btn btn-secundary'>Editar</button> <button id='delete' class='btn btn-secundary'>Eliminar</button>"
 												} ],
@@ -78,7 +63,12 @@ $(document)
 
 					$('#add').on('click', function() {
 						clearForm();
-						$("#modalFormLabel").text("Añadir cliente");
+						$("#modalFormLabel").text("Añadir factura");
+					});
+					
+					$.datepicker.setDefaults($.datepicker.regional['es']);
+					$('#broadCast').datepicker({    
+					    todayHighlight: true
 					});
 					
 				});
@@ -93,16 +83,16 @@ function clearForm() {
 
 function remove(data) {
 	$.confirm({
-		title : 'Eliminar cliente',
+		title : 'Eliminar factura',
 		closeIcon: true,
-		content : '¿ Desea eliminar el cliente ' + data['name'] + '?',
+		content : '¿ Desea eliminar la factura ' + data['number'] + '?',
 		buttons : {
 			Eliminar : {
 				btnClass : 'btn-red',
 				action : function() {
 					$.ajax({
 						type : 'DELETE',
-						url : '/client/' + data['id'],
+						url : '/bill/' + data['id'],
 						cache : false,
 						success : function(data) {
 							$.confirm({

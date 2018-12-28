@@ -19,7 +19,7 @@ public class ClientDataProvider {
 
 	@Autowired
 	DataProvider dataProvider;
-	
+
 	@Autowired
 	FileUtils fileUtils;
 
@@ -102,29 +102,37 @@ public class ClientDataProvider {
 		List<ClientEntity> data = new ArrayList<>();
 		if (sourcedata != null) {
 			for (Map<String, Object> d : sourcedata) {
-				data.add(ClientEntity.builder().id((int) d.get("Id")).cif((String) d.get("cif"))
-						.name((String) d.get("name")).address((String) d.get("address"))
-						.location((String) d.get("location")).province((String) d.get("province"))
-						.postalCode((String) d.get("postalCode")).country((String) d.get("country"))
-						.telephone((String) d.get("telephone")).email((String) d.get("email")).build());
+				data.add(convertData(d));
 			}
 		}
 		return data;
 	}
 
-	public boolean exists(ClientEntity client) {
+	@SuppressWarnings("unused")
+	private ClientEntity convertData(Map<String, Object> sourcedata) {
+		if (sourcedata != null) {
+				return ClientEntity.builder().id((int) sourcedata.get("Id")).cif((String) sourcedata.get("cif"))
+						.name((String) sourcedata.get("name")).address((String) sourcedata.get("address"))
+						.location((String) sourcedata.get("location")).province((String) sourcedata.get("province"))
+						.postalCode((String) sourcedata.get("postalCode")).country((String) sourcedata.get("country"))
+						.telephone((String) sourcedata.get("telephone")).email((String) sourcedata.get("email")).build();
+		}
+		return null;
+	}
+
+	public ClientEntity load(Integer id) {
 		Connection conn = null;
-		List<Map<String, Object>> data = null;
 		try {
 			conn = dataProvider.getConnection(fileUtils.getDatabaseFile());
-			PreparedStatement statement = conn.prepareStatement("SELECT * FROM Client WHERE [cif] = ?");
-			statement.setString(1, client.getCif());
-			data = dataProvider.getData(conn, statement);
+			PreparedStatement statement = conn.prepareStatement("SELECT * FROM Client WHERE [id] = ?");
+			statement.setInt(1, id);
+			Map<String, Object> data = dataProvider.getSingleData(conn, statement);
+			return convertData(data);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			dataProvider.closeConnection(conn);
 		}
-		return data != null && data.size() > 0;
+		return null;
 	}
 }

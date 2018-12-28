@@ -35,7 +35,6 @@ public class FileUtils {
 		UserEntity user = (UserEntity) session.getAttribute("user");
 		String path = databasePath + user.getEmail() + DATABASE_EXTENSION;
 		File databaseFile = new File(path);
-		System.out.println(path);
 		if (!databaseFile.exists()) {
 			// clone default database
 			String defaultpath = databasePath + "efactura" + DATABASE_EXTENSION;
@@ -53,7 +52,6 @@ public class FileUtils {
 		UserEntity user = (UserEntity) session.getAttribute("user");
 		String path = logoPath + user.getEmail() + LOGO_EXTENSION;
 		File logoFile = new File(path);
-		System.out.println(path);
 		if (logoFile.exists()) {
 			logoFile.delete();
 		}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/shared/layout}">
+
+<head>
+<title>Clientes</title>
+</head>
+
+<div layout:fragment="page_content" id="page_content">
+
+	<h1>
+		<div>
+			<div style="float: left">Facturas</div>
+			<div style="float: right">
+				<button class="btn btn-primary btn-lg" data-toggle="modal"
+					data-target="#modalForm" id="add">Añadir</button>
+			</div>
+		</div>
+	</h1>
+
+	<div class="modal fade" id="modalForm" tabindex="-1" role="dialog"
+		aria-labelledby="modalFormLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form id="modalForm" action="#" th:action="@{/client}"
+					th:object="${bill}" method="post">
+
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title" id="modalFormLabel"></h4>
+						<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">&times;</span> <span class="sr-only">Cerrar</span>
+						</button>
+					</div>
+
+					<!-- Modal Body -->
+					<div class="modal-body">
+						<input type="hidden" class="form-control"
+										th:field="*{id}"/>
+						<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">Cliente</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<select th:field="*{client}" class="form-control" th:required="required">
+										<option value="">Seleccione un cliente</option>
+										<option th:each="client : ${clients}"
+							                th:value="${client.id}"
+							                th:text="${client.name}">
+							            </option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">Fecha Emisión
+								fiscal</label>
+							<div class="cols-sm-10">
+							      <input data-format="dd/MM/yyyy" type="text" th:field="*{broadCast}"></input>
+							</div>
+						</div>
+
+					</div>
+
+					<!-- Modal Footer -->
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">Guardar</button>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<table id="billTable" class="display" style="width: 100%">
+		<!-- Header Table -->
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Número</th>
+				<th>Acciones</th>
+			</tr>
+		</thead>
+	</table>
+
+</div>
+
+<div layout:fragment="scripts" id="scripts">
+	<script src="/js/billdatatable.js"></script>
+</div>

@@ -134,5 +134,36 @@ public class DataProvider {
 		}
 		return data;
 	}
+	
+	public Map<String, Object> getSingleData(Connection conn, PreparedStatement statement) throws SQLException {
+		Map<String, Object> data = null;
+		ResultSet resultSet = null;
+		try {
+			// Step 2.C: Executing SQL and
+			// retrieve data into ResultSet
+			resultSet = statement.executeQuery();
+
+			ResultSetMetaData metaData = resultSet.getMetaData();
+			int columnCount = metaData.getColumnCount();
+
+			// processing returned data and printing into console
+			if (resultSet.next()) {
+				data = new LinkedHashMap<String, Object>();
+				for (int i = 1; i <= columnCount; i++) {
+					data.put(metaData.getColumnLabel(i), resultSet.getObject(i));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (statement != null) {
+				statement.close();
+			}
+			if (resultSet != null) {
+				resultSet.close();
+			}
+		}
+		return data;
+	}
 
 }
