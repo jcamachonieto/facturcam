@@ -70,6 +70,9 @@ $(document)
 					$('#broadCast').datepicker({    
 					    todayHighlight: true
 					});
+					$('#expiration').datepicker({    
+					    todayHighlight: true
+					});
 					
 				});
 

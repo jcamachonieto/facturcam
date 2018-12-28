@@ -44,7 +44,7 @@
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<select th:field="*{client}" class="form-control" th:required="required">
-										<option value="">Seleccione un cliente</option>
+										<option value="">Seleccione una opción</option>
 										<option th:each="client : ${clients}"
 							                th:value="${client.id}"
 							                th:text="${client.name}">
@@ -57,10 +57,69 @@
 							<label for="name" class="cols-sm-2 control-label">Fecha Emisión
 								fiscal</label>
 							<div class="cols-sm-10">
-							      <input data-format="dd/MM/yyyy" type="text" th:field="*{broadCast}"></input>
+							      <input data-format="dd/MM/yyyy" type="text" th:field="*{broadCast}" th:required="required"></input>
 							</div>
 						</div>
-
+						<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">Fecha Expiración
+								fiscal</label>
+							<div class="cols-sm-10">
+							      <input data-format="dd/MM/yyyy" type="text" th:field="*{expiration}" th:required="required"></input>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">IVA
+								fiscal</label>
+							<div class="cols-sm-10">
+							      <select th:field="*{tax}" class="form-control" th:required="required">
+										<option value="">Seleccione una opción</option>
+										<option value="4">4%</option>
+										<option value="10">10%</option>
+										<option value="21">21%</option>
+									</select>
+							</div>
+						</div>
+					</div>
+					<div class="modal-body">
+						<h6 class="modal-title" id="modalFormLabel">Conceptos</h6>
+						
+						<div class="form-group">
+							<label for="description" class="cols-sm-2 control-label">Descripción</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<input type="text" class="form-control" id="description" placeholder="Descripción" />
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="taxBase" class="cols-sm-2 control-label">Base Imponible</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<input type="text" class="form-control" id="taxBase" placeholder="Base Imponible" />
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="quantity" class="cols-sm-2 control-label">Cantidad</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<input type="text" class="form-control" id="quantity" placeholder="Cantidad" />
+								</div>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<table id="concepts" class="display" style="width:100%">
+						        <thead>
+						            <tr>
+						                <th>Descripción</th>
+						                <th>Cantidad</th>
+						                <th>Base Imponible</th>
+						                <th>Acciones</th>
+						            </tr>
+						        </thead>
+					    </table>
+					    </div>
 					</div>
 
 					<!-- Modal Footer -->
