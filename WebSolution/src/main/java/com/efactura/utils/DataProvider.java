@@ -43,8 +43,10 @@ public class DataProvider {
 		}
 	}
 
-	public void execute(Connection conn, String query, List<Object> params) throws SQLException {
+	public Integer execute(Connection conn, String query, List<Object> params) throws SQLException {
 		PreparedStatement st = null;
+		ResultSet rs = null;
+		Integer retorno = null;
 		try {
 			st = conn.prepareStatement(query);
 
@@ -55,13 +57,22 @@ public class DataProvider {
 			}
 
 			st.executeUpdate();
+			
+			rs = st.getGeneratedKeys();
+			if (rs.next()){
+			    retorno = rs.getInt(1);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			if (st != null) {
 				st.close();
 			}
+			if (rs != null) {
+				rs.close();
+			}
 		}
+		return retorno;
 	}
 
 	public List<Map<String, Object>> getData(Connection conn, String query) throws SQLException {

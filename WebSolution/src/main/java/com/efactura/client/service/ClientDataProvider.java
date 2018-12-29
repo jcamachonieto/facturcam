@@ -122,15 +122,23 @@ public class ClientDataProvider {
 
 	public ClientEntity load(Integer id) {
 		Connection conn = null;
+		PreparedStatement statement = null;
 		try {
 			conn = dataProvider.getConnection(fileUtils.getDatabaseFile());
-			PreparedStatement statement = conn.prepareStatement("SELECT * FROM Client WHERE [id] = ?");
+			statement = conn.prepareStatement("SELECT * FROM Client WHERE [id] = ?");
 			statement.setInt(1, id);
 			Map<String, Object> data = dataProvider.getSingleData(conn, statement);
 			return convertData(data);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 			dataProvider.closeConnection(conn);
 		}
 		return null;

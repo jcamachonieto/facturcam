@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.efactura.bill.model.BillEntity;
+import com.efactura.bill.model.ConceptEntity;
 import com.efactura.client.service.ClientDataProvider;
 import com.efactura.utils.DataProvider;
 import com.efactura.utils.FileUtils;
@@ -21,6 +22,9 @@ public class BillDataProvider {
 
 	@Autowired
 	DataProvider dataProvider;
+	
+	@Autowired
+	ConceptDataProvider conceptDataProvider;
 	
 	@Autowired
 	ClientDataProvider clientDataProvider;
@@ -42,7 +46,7 @@ public class BillDataProvider {
 		return convertData(data);
 	}
 
-	public void upsert(BillEntity data) {
+	public void upsert(BillEntity data, List<ConceptEntity> concepts) {
 		Connection conn = null;
 		String query = null;
 		try {
@@ -71,7 +75,14 @@ public class BillDataProvider {
 				params.add(data.getId());
 			}
 
-			dataProvider.execute(conn, query, params);
+			Integer idBill = dataProvider.execute(conn, query, params);
+			
+			if (data.getId() != 0) {
+				conceptDataProvider.deleteByBill(data.getId());
+			}
+			
+			conceptDataProvider.insert(idBill, concepts);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -101,10 +112,11 @@ public class BillDataProvider {
 		List<BillEntity> data = new ArrayList<>();
 		if (sourcedata != null) {
 			for (Map<String, Object> d : sourcedata) {
-				data.add(BillEntity.builder().id((int) d.get("Id")).idClient((Integer) d.get("idClient"))
-						.number((Long) d.get("number")).broadCast((Date) d.get("broadCast"))
-						.expiration((Date) d.get("expiration")).year((Integer) d.get("year"))
-						.tax((Integer) d.get("tax")).build());
+				BillEntity bill = BillEntity.builder().id((int) d.get("Id")).idClient((Integer) d.get("id_client"))
+						.number((Long) d.get("number")).broadCast((Date) d.get("broadcast_date"))
+						.expiration((Date) d.get("expiration_date")).year((Integer) d.get("year"))
+						.tax((Integer) d.get("tax")).clientName(clientDataProvider.load((Integer) d.get("id_client")).getName()).build();
+				data.add(bill);
 			}
 		}
 		return data;
@@ -113,14 +125,22 @@ public class BillDataProvider {
 	public boolean exists(BillEntity bill) {
 		Connection conn = null;
 		List<Map<String, Object>> data = null;
+		PreparedStatement statement = null;
 		try {
 			conn = dataProvider.getConnection(fileUtils.getDatabaseFile());
-			PreparedStatement statement = conn.prepareStatement("SELECT * FROM Bill WHERE [id] = ?");
+			statement = conn.prepareStatement("SELECT * FROM Bill WHERE [id] = ?");
 			statement.setInt(1, bill.getId());
 			data = dataProvider.getData(conn, statement);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 			dataProvider.closeConnection(conn);
 		}
 		return data != null && data.size() > 0;
@@ -129,14 +149,22 @@ public class BillDataProvider {
 	public Long countByYear(int year) {
 		Connection conn = null;
 		Map<String, Object> data = null;
+		PreparedStatement statement = null;
 		try {
 			conn = dataProvider.getConnection(fileUtils.getDatabaseFile());
-			PreparedStatement statement = conn.prepareStatement("SELECT COUNT(1) FROM Bill WHERE [year] = ?");
+			statement = conn.prepareStatement("SELECT COUNT(1) FROM Bill WHERE [year] = ?");
 			statement.setInt(1, year);
 			data = dataProvider.getSingleData(conn, statement);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 			dataProvider.closeConnection(conn);
 		}
 		return (Long) data.get("C1"); 

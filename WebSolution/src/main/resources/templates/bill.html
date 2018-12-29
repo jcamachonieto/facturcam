@@ -24,7 +24,7 @@
 		aria-labelledby="modalFormLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form id="modalForm" action="#" th:action="@{/bill}"
+				<form id="modalFormContent" action="#" th:action="@{/bill}"
 					th:object="${bill}" method="post">
 
 					<!-- Modal Header -->
@@ -38,6 +38,8 @@
 					<!-- Modal Body -->
 					<div class="modal-body">
 						<input type="hidden" class="form-control" th:field="*{id}"/>
+						<input type="hidden" class="form-control" th:field="*{number}"/>
+						<input type="hidden" class="form-control" th:field="*{year}"/>
 						<div class="form-group">
 							<label for="name" class="cols-sm-2 control-label">Cliente</label>
 							<div class="cols-sm-10">
@@ -142,7 +144,11 @@
 		<thead>
 			<tr>
 				<th>Id</th>
+				<th>Año</th>
 				<th>Número</th>
+				<th>Cliente</th>
+				<th>Fecha Emisión</th>
+				<th>Fecha Expiración</th>
 				<th>Acciones</th>
 			</tr>
 		</thead>
@@ -152,4 +158,5 @@
 
 <div layout:fragment="scripts" id="scripts">
 	<script src="/js/billdatatable.js"></script>
+	<script src="/js/moment.js"></script>
 </div>

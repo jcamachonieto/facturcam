@@ -35,5 +35,12 @@ public class ConceptEntity {
 		this.quantity = quantity;
 		this.taxBase = taxBase;
 	}
+	
+	public ConceptEntity(@NotNull String description, @NotNull Integer quantity, @NotNull Integer taxBase) {
+		super();
+		this.description = description;
+		this.quantity = quantity;
+		this.taxBase = taxBase;
+	}
 
 }

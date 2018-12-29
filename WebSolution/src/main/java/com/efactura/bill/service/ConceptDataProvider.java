@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.efactura.bill.model.ConceptEntity;
-import com.efactura.client.model.ClientEntity;
 import com.efactura.utils.DataProvider;
 import com.efactura.utils.FileUtils;
 
@@ -24,21 +23,35 @@ public class ConceptDataProvider {
 	@Autowired
 	FileUtils fileUtils;
 
-	public List<ConceptEntity> getList() {
+	public List<ConceptEntity> getList(Integer idBill) {
 		Connection conn = null;
+		PreparedStatement statement = null;
 		List<Map<String, Object>> data = null;
 		try {
 			conn = dataProvider.getConnection(fileUtils.getDatabaseFile());
-			data = dataProvider.getData(conn, "SELECT * FROM Concept");
+			
+			statement = conn.prepareStatement("SELECT * FROM Concept WHERE [id_Bill] = ?");
+			statement.setInt(1, idBill);
+			data = dataProvider.getData(conn, statement);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 			dataProvider.closeConnection(conn);
 		}
 		return convertData(data);
 	}
+	
+	
 
-	public void insert(List<ConceptEntity> dataList) {
+	public void insert(Integer idBill, List<ConceptEntity> dataList) {
 		Connection conn = null;
 		String query = null;
 		try {
@@ -48,7 +61,7 @@ public class ConceptDataProvider {
 				List<Object> params = new ArrayList<Object>();
 
 				query = "INSERT INTO Concept ([id_bill], [description], [quantity], [tax_base]) VALUES (?, ?, ?, ?)";
-				params.add(data.getIdBill());
+				params.add(idBill);
 				params.add(data.getDescription());
 				params.add(data.getQuantity());
 				params.add(data.getTaxBase());
@@ -86,25 +99,9 @@ public class ConceptDataProvider {
 			for (Map<String, Object> d : sourcedata) {
 				data.add(ConceptEntity.builder().id((int) d.get("Id")).idBill((Integer) d.get("idBill"))
 						.description((String) d.get("description")).quantity((Integer) d.get("quantity"))
-						.taxBase((Integer) d.get("taxBase")).build());
+						.taxBase((Integer) d.get("tax_base")).build());
 			}
 		}
 		return data;
-	}
-
-	public boolean exists(ClientEntity client) {
-		Connection conn = null;
-		List<Map<String, Object>> data = null;
-		try {
-			conn = dataProvider.getConnection(fileUtils.getDatabaseFile());
-			PreparedStatement statement = conn.prepareStatement("SELECT * FROM Concept WHERE [id] = ?");
-			statement.setString(1, client.getCif());
-			data = dataProvider.getData(conn, statement);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			dataProvider.closeConnection(conn);
-		}
-		return data != null && data.size() > 0;
 	}
 }
