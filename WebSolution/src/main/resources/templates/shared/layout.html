@@ -59,10 +59,10 @@
 	<!-- /.container -->
 
 	<script>
-		$('.navbar-nav .nav-link').click(function() {
+		function activeMenu(item) {
 			$('.navbar-nav .nav-link').removeClass('active');
-			$(this).addClass('active');
-		})
+			$(item).addClass('active');
+		}
 	</script>
 	
 	<script th:inline="javascript" th:if="${message != null}">

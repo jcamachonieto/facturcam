@@ -54,7 +54,7 @@ public class ClientController {
 	public ModelAndView createClient(@ModelAttribute("client") @Valid ClientEntity client, Model model) {
 		clientDataProvider.upsert(client);
 		model.addAttribute("message",
-				MessageDto.builder().text("Cliente creado correctamente").type(MessageConstants.TYPE_SUCCESS).build());
+				MessageDto.builder().text("Cliente guardado correctamente").type(MessageConstants.TYPE_SUCCESS).build());
 		return homePage(model);
 	}
 }

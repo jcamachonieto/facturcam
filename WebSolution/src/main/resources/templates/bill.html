@@ -88,7 +88,7 @@
 							<label for="description" class="cols-sm-2 control-label">Descripción</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
-									<input type="text" class="form-control" id="description" placeholder="Descripción" onchange="activeAddConcept()"/>
+									<input type="text" class="form-control" id="description" placeholder="Descripción" onkeyup="activeAddConcept()"/>
 								</div>
 							</div>
 						</div>
@@ -96,7 +96,7 @@
 							<label for="taxBase" class="cols-sm-2 control-label">Base Imponible</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
-									<input type="text" class="form-control" id="taxBase" placeholder="Base Imponible" onchange="activeAddConcept()"/>
+									<input type="number" step="0.01" min="0" class="form-control" id="taxBase" placeholder="Base Imponible" onkeyup="activeAddConcept()"/>
 								</div>
 							</div>
 						</div>
@@ -104,7 +104,7 @@
 							<label for="quantity" class="cols-sm-2 control-label">Cantidad</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
-									<input type="text" class="form-control" id="quantity" placeholder="Cantidad" onchange="activeAddConcept()"/>
+									<input  type="number" step="0.01" min="0" class="form-control" id="quantity" placeholder="Cantidad" onkeyup="activeAddConcept()"/>
 								</div>
 							</div>
 						</div>
@@ -157,6 +157,9 @@
 </div>
 
 <div layout:fragment="scripts" id="scripts">
+	<script>
+		activeMenu($('.navbar-nav .nav-link')[2]);
+	</script>
 	<script src="/js/billdatatable.js"></script>
 	<script src="/js/moment.js"></script>
 </div>

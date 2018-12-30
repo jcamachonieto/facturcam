@@ -91,6 +91,7 @@ $(document)
 												}
 											});
 										} else if (this.id === 'pdf') {
+											var name = data['year'] + '_' + data['number'] + ".pdf";
 											var req = new XMLHttpRequest();
 										    req.open("POST", '/bill/download/' + data['id'], true);
 										    req.responseType = "blob";
@@ -99,7 +100,7 @@ $(document)
 										            var blob = req.response;
 										            var link = document.createElement('a');
 										            link.href = window.URL.createObjectURL(blob);
-										            link.download = new Date().getTime() + ".pdf";
+										            link.download = name;
 										            link.click();
 										        }
 										    };
@@ -148,37 +149,13 @@ $(document)
 										"columnDefs" : [ {
 											"targets" : 3,
 											"data" : null,
-											"defaultContent" : "<button id='delete' class='btn btn-secundary btn-red'>Eliminar</button>"
+											"defaultContent" : "<input type='button' id='conceptDelete' class='btn btn-secundary btn-red' value='Eliminar' onclick='deleteConcept(this)'/>"
 										} ],
 										"paging" : false,
 										"ordering" : false,
 										"info" : false,
 										"searching" : false
 									});
-
-					$('#concepts tbody').on(
-							'click',
-							'button',
-							function() {
-								var row = tableConcepts.row($(this).parents(
-										'tr'));
-								var data = row.data();
-								$.confirm({
-									title : 'Eliminar concepto',
-									closeIcon : true,
-									content : '¿ Desea eliminar '
-											+ data['description'] + '?',
-									buttons : {
-										Cancelar : {},
-										Eliminar : {
-											btnClass : 'btn-red',
-											action : function() {
-												row.remove().draw(false);
-											}
-										}
-									}
-								});
-							});
 
 					var form = $('#modalFormContent');
 					form.on('submit', function(e) {
@@ -209,8 +186,19 @@ $(document)
 										),
 								"concepts" : JSON.stringify(concepts),
 							},
-							success : function(response) {
-								alert("ok");
+							success : function(data) {
+								$('#modalForm').modal('hide');
+								$.confirm({
+									title : data.title,
+									content : data.text,
+									type : data.type,
+									typeAnimated : true,
+									autoClose : 'cerrar|8000',
+									buttons : {
+										cerrar : function() {
+										}
+									}
+								});
 							},
 							error : function(data) {
 								$.confirm({
@@ -229,6 +217,26 @@ $(document)
 					});
 
 				});
+
+function deleteConcept(element) {
+	var row = tableConcepts.row($(element).parents('tr'));
+	var data = row.data();
+	$.confirm({
+		title : 'Eliminar concepto',
+		closeIcon : true,
+		content : '¿ Desea eliminar '
+				+ data['description'] + '?',
+		buttons : {
+			Cancelar : {},
+			Eliminar : {
+				btnClass : 'btn-red',
+				action : function() {
+					row.remove().draw(false);
+				}
+			}
+		}
+	});
+}
 
 function activeAddConcept() {
 	if ($("#description").val() != "" && $("#taxBase").val() != ""

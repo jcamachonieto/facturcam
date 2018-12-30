@@ -57,7 +57,7 @@ public class PdfGenaratorUtil {
 			PdfPTable tableHeader = new PdfPTable(2);
 			tableHeader.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 			tableHeader.setWidthPercentage(100);
-			tableHeader.setWidths(new int[] { 1, 2 });
+			tableHeader.setWidths(new int[] { 3, 2 });
 			tableHeader.addCell(logoTable());
 			
 			// bill num data
@@ -111,42 +111,44 @@ public class PdfGenaratorUtil {
 		UserEntity userSession = (UserEntity) session.getAttribute("user");
 		
 		tableLogo.addCell(createTextCell(userSession.getName(),
-				Element.ALIGN_JUSTIFIED, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont("Courier", 8, Font.NORMAL)));
+				Element.ALIGN_LEFT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont("Courier", 8, Font.NORMAL)));
 		tableLogo.addCell(createTextCell("NIF/CIF: " + userSession.getCif(),
-				Element.ALIGN_JUSTIFIED, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont("Courier", 8, Font.NORMAL)));
+				Element.ALIGN_LEFT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont("Courier", 8, Font.NORMAL)));
 		tableLogo.addCell(createTextCell(userSession.getAddress(),
-				Element.ALIGN_JUSTIFIED, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont("Courier", 8, Font.NORMAL)));
+				Element.ALIGN_LEFT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont("Courier", 8, Font.NORMAL)));
 		tableLogo.addCell(createTextCell(userSession.getPostalCode() + " " + userSession.getLocation(),
-				Element.ALIGN_JUSTIFIED, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont("Courier", 8, Font.NORMAL)));
+				Element.ALIGN_LEFT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont("Courier", 8, Font.NORMAL)));
 		tableLogo.addCell(createTextCell(userSession.getProvince() + " " + userSession.getCountry(),
-				Element.ALIGN_JUSTIFIED, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont("Courier", 8, Font.NORMAL)));
+				Element.ALIGN_LEFT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont("Courier", 8, Font.NORMAL)));
+		tableLogo.addCell(createTextCell(userSession.getTelephone() + " " + userSession.getEmail(),
+				Element.ALIGN_LEFT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont("Courier", 8, Font.NORMAL)));
 		
 		return tableLogo;
 	}
 	
 	private PdfPTable clientTable(ClientEntity client) throws DocumentException, IOException {
-		PdfPTable tableClient = new PdfPTable(2);
+		PdfPTable tableClient = new PdfPTable(1);
 		tableClient.setWidthPercentage(100);
-		tableClient.setWidths(new int[] { 1, 2 });
+		tableClient.setWidths(new int[] { 1 });
 		tableClient.addCell(emptyCell());
 		
 		tableClient.addCell(createTextCell("Cliente",
 				Element.ALIGN_RIGHT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont(FontFactory.COURIER, 12, Font.BOLD)));
-		tableClient.addCell(emptyCell());
 		tableClient.addCell(createTextCell(client.getName(),
 				Element.ALIGN_RIGHT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont(FontFactory.COURIER, 8, Font.NORMAL)));
-		tableClient.addCell(emptyCell());
 		tableClient.addCell(createTextCell("NIF/CIF:" + client.getCif(),
 				Element.ALIGN_RIGHT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont(FontFactory.COURIER, 8, Font.NORMAL)));
-		tableClient.addCell(emptyCell());
 		tableClient.addCell(createTextCell(client.getAddress(),
 				Element.ALIGN_RIGHT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont(FontFactory.COURIER, 8, Font.NORMAL)));
-		tableClient.addCell(emptyCell());
 		tableClient.addCell(createTextCell(client.getPostalCode() + " " + client.getLocation(),
 				Element.ALIGN_RIGHT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont(FontFactory.COURIER, 8, Font.NORMAL)));
-		tableClient.addCell(emptyCell());
 		tableClient.addCell(createTextCell(client.getProvince() + ", " + client.getCountry(),
 				Element.ALIGN_RIGHT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont(FontFactory.COURIER, 8, Font.NORMAL)));
+		tableClient.addCell(createTextCell(client.getTelephone(),
+				Element.ALIGN_RIGHT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont(FontFactory.COURIER, 8, Font.NORMAL)));
+		tableClient.addCell(createTextCell(client.getEmail(),
+				Element.ALIGN_RIGHT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont(FontFactory.COURIER, 8, Font.NORMAL)));
+		
 		return tableClient;
 	}
 

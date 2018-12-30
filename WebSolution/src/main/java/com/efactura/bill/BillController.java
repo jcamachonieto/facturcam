@@ -78,7 +78,7 @@ public class BillController {
 	}
 
 	@PostMapping("/bill")
-	public ModelAndView createBill(@RequestParam Map<String, String> body, Model model) {
+	public MessageDto createBill(@RequestParam Map<String, String> body, Model model) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -94,13 +94,10 @@ public class BillController {
 			}
 			billDataProvider.upsert(bill, concepts);
 			
-			model.addAttribute("message",
-					MessageDto.builder().text("Factura creada correctamente").type(MessageConstants.TYPE_SUCCESS).build());
+			return MessageDto.builder().text("Factura guardada correctamente").type(MessageConstants.TYPE_SUCCESS).build();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return MessageDto.builder().text("Error al guardar factura").type(MessageConstants.TYPE_ERROR).build();
 		}
-		return homePage(model);
 	}
 	
 	@PostMapping("/bill/download/{idBill}")

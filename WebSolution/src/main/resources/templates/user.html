@@ -138,6 +138,9 @@
 
 <div layout:fragment="scripts" id="scripts">
 	<script>
+		activeMenu($('.navbar-nav .nav-link')[3]);
+	</script>
+	<script>
 		$("#logo").change(function(){
 			uploadFile(this);
 		}); 
