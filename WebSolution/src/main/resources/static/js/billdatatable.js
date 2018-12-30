@@ -29,7 +29,10 @@ $(document)
 												return moment(oObj).format("DD/MM/YYYY");
 											}
 										}],
-										"dom" : '<"top"if>rt<"bottom"lp><"clear">',
+										"dom" : '<"top"Bif>Brt<"bottom"lp><"clear">',
+									    "buttons": [
+									        'pdf'
+									    ],
 										"columnDefs" : [
 												{
 													"targets" : 0,
@@ -38,7 +41,7 @@ $(document)
 												{
 													"targets" : 6,
 													"data" : null,
-													"defaultContent" : "<button id='edit' data-toggle='modal' data-target='#modalForm' class='btn btn-secundary'>Editar</button> <button id='delete' class='btn btn-secundary'>Eliminar</button>"
+													"defaultContent" : "<button id='pdf' class='btn btn-secundary'>Pdf</button><button id='edit' data-toggle='modal' data-target='#modalForm' class='btn btn-secundary'>Editar</button> <button id='delete' class='btn btn-secundary'>Eliminar</button>"
 												} ],
 										"language" : {
 											"lengthMenu" : "Mostrar _MENU_ datos por pagina.",
@@ -87,6 +90,20 @@ $(document)
 													});
 												}
 											});
+										} else if (this.id === 'pdf') {
+											var req = new XMLHttpRequest();
+										    req.open("POST", '/bill/download/' + data['id'], true);
+										    req.responseType = "blob";
+										    req.onreadystatechange = function () {
+										        if (req.readyState === 4 && req.status === 200) {
+										            var blob = req.response;
+										            var link = document.createElement('a');
+										            link.href = window.URL.createObjectURL(blob);
+										            link.download = new Date().getTime() + ".pdf";
+										            link.click();
+										        }
+										    };
+										    req.send();
 										} else {
 											remove(data);
 										}

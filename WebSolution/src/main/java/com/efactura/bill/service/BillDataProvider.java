@@ -53,7 +53,7 @@ public class BillDataProvider {
 			conn = dataProvider.getConnection(fileUtils.getDatabaseFile());
 
 			List<Object> params = new ArrayList<Object>();
-
+			Integer idBill = null;
 			if (data.getId() == 0) {
 				query = "INSERT INTO Bill ([id_client], [number], [broadcast_date], [expiration_date], [year], "
 						+ "[tax]) VALUES (?, ?, ?, ?, ?, ?)";
@@ -63,6 +63,7 @@ public class BillDataProvider {
 				params.add(data.getExpiration());
 				params.add(data.getYear());
 				params.add(data.getTax());
+				idBill = dataProvider.execute(conn, query, params);
 			} else {
 				query = "UPDATE Bill SET [id_client] = ?, [number] = ?, [broadcast_date] = ?,"
 						+ " [expiration_date] = ?, [year] = ?, [tax] = ? WHERE [Id] = ?";
@@ -73,9 +74,8 @@ public class BillDataProvider {
 				params.add(data.getYear());
 				params.add(data.getTax());
 				params.add(data.getId());
+				idBill = data.getId();
 			}
-
-			Integer idBill = dataProvider.execute(conn, query, params);
 			
 			if (data.getId() != 0) {
 				conceptDataProvider.deleteByBill(data.getId());
@@ -107,30 +107,37 @@ public class BillDataProvider {
 			dataProvider.closeConnection(conn);
 		}
 	}
+	
+	private BillEntity convertSimpleData(Map<String, Object> d) {
+		return BillEntity.builder().id((int) d.get("Id")).idClient((Integer) d.get("id_client"))
+				.number((Long) d.get("number")).broadCast((Date) d.get("broadcast_date"))
+				.expiration((Date) d.get("expiration_date")).year((Integer) d.get("year"))
+				.tax((Integer) d.get("tax")).clientName(clientDataProvider.load((Integer) d.get("id_client")).getName()).build();
+	}
 
 	private List<BillEntity> convertData(List<Map<String, Object>> sourcedata) {
 		List<BillEntity> data = new ArrayList<>();
 		if (sourcedata != null) {
 			for (Map<String, Object> d : sourcedata) {
-				BillEntity bill = BillEntity.builder().id((int) d.get("Id")).idClient((Integer) d.get("id_client"))
-						.number((Long) d.get("number")).broadCast((Date) d.get("broadcast_date"))
-						.expiration((Date) d.get("expiration_date")).year((Integer) d.get("year"))
-						.tax((Integer) d.get("tax")).clientName(clientDataProvider.load((Integer) d.get("id_client")).getName()).build();
-				data.add(bill);
+				data.add(convertSimpleData(d));
 			}
 		}
 		return data;
 	}
 
-	public boolean exists(BillEntity bill) {
+	public BillEntity load(int idbill) {
 		Connection conn = null;
 		List<Map<String, Object>> data = null;
 		PreparedStatement statement = null;
+		BillEntity retorno = null;
 		try {
 			conn = dataProvider.getConnection(fileUtils.getDatabaseFile());
 			statement = conn.prepareStatement("SELECT * FROM Bill WHERE [id] = ?");
-			statement.setInt(1, bill.getId());
+			statement.setInt(1, idbill);
 			data = dataProvider.getData(conn, statement);
+			if (data != null && data.size() > 0) {
+				retorno = convertSimpleData(data.get(0));
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -143,7 +150,7 @@ public class BillDataProvider {
 			}
 			dataProvider.closeConnection(conn);
 		}
-		return data != null && data.size() > 0;
+		return retorno;
 	}
 	
 	public Long countByYear(int year) {

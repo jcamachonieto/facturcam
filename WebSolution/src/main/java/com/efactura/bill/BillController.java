@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,10 +25,15 @@ import org.springframework.web.servlet.ModelAndView;
 import com.efactura.bill.model.BillEntity;
 import com.efactura.bill.model.ConceptEntity;
 import com.efactura.bill.service.BillDataProvider;
+import com.efactura.bill.service.ConceptDataProvider;
 import com.efactura.client.ClientController;
+import com.efactura.client.model.ClientEntity;
+import com.efactura.client.service.ClientDataProvider;
 import com.efactura.message.model.MessageConstants;
 import com.efactura.message.model.MessageDto;
+import com.efactura.utils.PdfGenaratorUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itextpdf.text.DocumentException;
 
 @RestController
 public class BillController {
@@ -34,6 +43,15 @@ public class BillController {
 	
 	@Autowired
 	private ClientController clientController;
+	
+	@Autowired
+	private ConceptDataProvider conceptDataProvider;
+	
+	@Autowired
+	ClientDataProvider clientDataProvider;
+	
+	@Autowired
+	PdfGenaratorUtil pdfGenaratorUtil;
 
 	@GetMapping("/bill")
 	public ModelAndView homePage(Model model) {
@@ -83,5 +101,29 @@ public class BillController {
 			e.printStackTrace();
 		}
 		return homePage(model);
+	}
+	
+	@PostMapping("/bill/download/{idBill}")
+	public ResponseEntity<byte[]> download(Model model, @PathVariable int idBill) {
+		ResponseEntity<byte[]> response = null;
+		try {
+			BillEntity bill = billDataProvider.load(idBill);
+			ClientEntity client = clientDataProvider.load(bill.getIdClient());
+			List<ConceptEntity> concepts = conceptDataProvider.getList(idBill);
+			
+			byte[] contents = pdfGenaratorUtil.createPDf(client, bill, concepts);
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.parseMediaType("application/pdf"));
+			// Here you have to set the actual filename of your pdf
+			String filename = bill.getYear() + "/" + bill.getNumber() + ".pdf";
+			headers.setContentDispositionFormData(filename, filename);
+			headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+			response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
+		} catch (DocumentException e) {
+			response = new ResponseEntity<>(null, null, HttpStatus.BAD_REQUEST);
+		}
+	    
+	    return response;
 	}
 }

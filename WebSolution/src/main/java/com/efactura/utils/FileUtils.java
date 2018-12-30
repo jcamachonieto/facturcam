@@ -69,5 +69,10 @@ public class FileUtils {
 		}
 		return null;
 	}
+	
+	public String getLogoPath() {
+		UserEntity user = (UserEntity) session.getAttribute("user");
+		return logoPath + user.getEmail() + LOGO_EXTENSION;
+	}
 
 }

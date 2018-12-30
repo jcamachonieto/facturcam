@@ -1,5 +1,6 @@
 package com.efactura.bill.service;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -97,9 +98,9 @@ public class ConceptDataProvider {
 		List<ConceptEntity> data = new ArrayList<>();
 		if (sourcedata != null) {
 			for (Map<String, Object> d : sourcedata) {
-				data.add(ConceptEntity.builder().id((int) d.get("Id")).idBill((Integer) d.get("idBill"))
-						.description((String) d.get("description")).quantity((Integer) d.get("quantity"))
-						.taxBase((Integer) d.get("tax_base")).build());
+				data.add(ConceptEntity.builder().id((int) d.get("Id")).idBill((Integer) d.get("id_bill"))
+						.description((String) d.get("description")).quantity(BigDecimal.valueOf((Double) d.get("quantity")))
+						.taxBase(BigDecimal.valueOf((Double) d.get("tax_base"))).build());
 			}
 		}
 		return data;

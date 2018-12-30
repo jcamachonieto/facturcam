@@ -1,5 +1,7 @@
 package com.efactura.bill.model;
 
+import java.math.BigDecimal;
+
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
@@ -18,16 +20,16 @@ public class ConceptEntity {
 	private String description;
 
 	@NotNull
-	private Integer quantity;
+	private BigDecimal quantity;
 	
 	@NotNull
-	private Integer taxBase;
+	private BigDecimal taxBase;
 	
 	public ConceptEntity() {
 		super();
 	}
 	
-	public ConceptEntity(int id, @NotNull Integer idBill, @NotNull String description, @NotNull Integer quantity, @NotNull Integer taxBase) {
+	public ConceptEntity(int id, @NotNull Integer idBill, @NotNull String description, @NotNull BigDecimal quantity, @NotNull BigDecimal taxBase) {
 		super();
 		this.id = id;
 		this.idBill = idBill;
@@ -36,7 +38,7 @@ public class ConceptEntity {
 		this.taxBase = taxBase;
 	}
 	
-	public ConceptEntity(@NotNull String description, @NotNull Integer quantity, @NotNull Integer taxBase) {
+	public ConceptEntity(@NotNull String description, @NotNull BigDecimal quantity, @NotNull BigDecimal taxBase) {
 		super();
 		this.description = description;
 		this.quantity = quantity;
