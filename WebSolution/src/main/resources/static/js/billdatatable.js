@@ -199,6 +199,7 @@ $(document)
 										}
 									}
 								});
+								table.ajax.reload(null, false);
 							},
 							error : function(data) {
 								$.confirm({

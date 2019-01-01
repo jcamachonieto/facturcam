@@ -69,7 +69,7 @@ public class BillController {
 	public MessageDto deleteBill(@PathVariable int id) {
 		try {
 			billDataProvider.delete(id);
-			return MessageDto.builder().text("Cliente eliminado correctamente").type(MessageConstants.TYPE_SUCCESS)
+			return MessageDto.builder().text("Factura eliminada correctamente").type(MessageConstants.TYPE_SUCCESS)
 					.build();
 		} catch (Exception e) {
 			return MessageDto.builder().text("Se ha producido un error al eliminar la factura")
