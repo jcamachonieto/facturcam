@@ -30,10 +30,18 @@ public class FileUtils {
 
 	private static final String DATABASE_EXTENSION = ".accdb";
 	private static final String LOGO_EXTENSION = ".jpg";
+	
+	public String getFullPathDatabase() {
+		return databasePath + getDatabaseName();
+	}
+	
+	public String getDatabaseName() {
+		UserEntity user = (UserEntity) session.getAttribute("user");
+		return user.getEmail() + DATABASE_EXTENSION;
+	}
 
 	public String getDatabaseFile() {
-		UserEntity user = (UserEntity) session.getAttribute("user");
-		String path = databasePath + user.getEmail() + DATABASE_EXTENSION;
+		String path = databasePath + getDatabaseName();
 		File databaseFile = new File(path);
 		if (!databaseFile.exists()) {
 			// clone default database

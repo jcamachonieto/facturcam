@@ -1,5 +1,8 @@
 package com.efactura.login;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ResolvableType;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,10 +27,13 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
 
+import com.dropbox.core.DbxException;
 import com.efactura.message.model.MessageConstants;
 import com.efactura.message.model.MessageDto;
 import com.efactura.user.model.UserEntity;
 import com.efactura.user.service.IUserDataProvider;
+import com.efactura.utils.DropBoxBackupUtil;
+import com.efactura.utils.FileUtils;
 
 @Controller
 public class LoginController {
@@ -43,6 +50,15 @@ public class LoginController {
     
     @Autowired
     private IUserDataProvider userDataProvider;
+    
+    @Autowired
+    DropBoxBackupUtil dropBoxBackupUtil;
+    
+    @Value("${dropbox.accessToken}")
+	private String accessToken;
+    
+    @Autowired
+	private FileUtils fileUtils;
 
     @SuppressWarnings("unchecked")
 	@GetMapping("/login")
@@ -102,6 +118,41 @@ public class LoginController {
             }
             
             session.setAttribute("user", user);
+            
+            try {
+            	boolean dobackup = false;
+            	
+            	Calendar nextBackupCalendar = Calendar.getInstance();
+            	nextBackupCalendar.setTime(user.getBackup());
+                if (user.getBackupPeriod().equals("d")) {
+                	nextBackupCalendar.add(Calendar.DAY_OF_YEAR, 1);
+                }
+                if (user.getBackupPeriod().equals("w")) {
+                	nextBackupCalendar.add(Calendar.WEEK_OF_YEAR, 1);
+                }
+                if (user.getBackupPeriod().equals("m")) {
+                	nextBackupCalendar.add(Calendar.MONTH, 1);
+                }
+                if (user.getBackupPeriod().equals("y")) {
+                	nextBackupCalendar.add(Calendar.YEAR, 1);
+                }
+            	
+            	if (user.getBackup() == null
+                	|| nextBackupCalendar.before(Calendar.getInstance())) {
+                	dobackup = true;
+                }
+                    
+            	String databaseFile = fileUtils.getFullPathDatabase();
+                if (new File(databaseFile).exists()
+                	&& dobackup) {
+	            	dropBoxBackupUtil.backup(accessToken, databaseFile, user);
+	            		user.setBackup(new Date());
+	            		user = userDataProvider.save(user);
+            	}
+			} catch (DbxException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
 
         return "redirect:/";

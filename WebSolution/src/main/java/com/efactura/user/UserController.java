@@ -56,6 +56,8 @@ public class UserController {
 	public ModelAndView update(@ModelAttribute("user") @Valid UserEntity user, Model model) {
 		UserEntity userSession = (UserEntity) session.getAttribute("user");
 		user.setExpirationDate(userSession.getExpirationDate());
+		user.setBackup(userSession.getBackup());
+		user.setBackupPeriod(userSession.getBackupPeriod());
 		user = userDataProvider.save(user);
 		session.setAttribute("user", user);
 		model.addAttribute("message", MessageDto.builder().text("Configuración modificada correctamente")

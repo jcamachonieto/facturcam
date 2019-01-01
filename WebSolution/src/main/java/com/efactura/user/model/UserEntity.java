@@ -58,5 +58,8 @@ public class UserEntity {
 	
 	@NotNull
 	private String telephone;
+	
+	private Date backup;
+	private String backupPeriod;
 
 }
