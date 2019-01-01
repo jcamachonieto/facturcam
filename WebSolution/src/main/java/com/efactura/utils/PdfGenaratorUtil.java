@@ -194,12 +194,12 @@ public class PdfGenaratorUtil {
 		table.addCell(createTextCell("Total", Element.ALIGN_LEFT, Element.ALIGN_TOP, Rectangle.BOX, FontFactory.getFont(FontFactory.COURIER, 10, Font.BOLDITALIC)));
 		for (ConceptEntity concept : concepts) {
 			table.addCell(createTextCell(concept.getDescription(), Element.ALIGN_LEFT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont(FontFactory.COURIER, 8, Font.NORMAL)));
-			table.addCell(createTextCell(concept.getTaxBase().toString() + "€", Element.ALIGN_LEFT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont(FontFactory.COURIER, 8, Font.NORMAL)));
+			table.addCell(createTextCell(concept.getTaxBase().toString() + " €", Element.ALIGN_LEFT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont(FontFactory.COURIER, 8, Font.NORMAL)));
 			table.addCell(createTextCell(concept.getQuantity().toString(), Element.ALIGN_LEFT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont(FontFactory.COURIER, 8, Font.NORMAL)));
 			BigDecimal totalConcept = concept.getTaxBase().multiply(concept.getQuantity());
 			totalConcept = totalConcept.setScale(2);
 			totalConcepts = totalConcepts.add(totalConcept);
-			table.addCell(createTextCell(totalConcept.toString() + "€", Element.ALIGN_LEFT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont(FontFactory.COURIER, 8, Font.NORMAL)));
+			table.addCell(createTextCell(totalConcept.toString() + " €", Element.ALIGN_LEFT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont(FontFactory.COURIER, 8, Font.NORMAL)));
 		}
 		return table;
 	}
@@ -210,7 +210,7 @@ public class PdfGenaratorUtil {
 		table.setWidths(new int[] { 8, 2});
 		
 		table.addCell(createTextCell("Total Base Imponible:", Element.ALIGN_RIGHT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont(FontFactory.COURIER, 10, Font.NORMAL)));
-		table.addCell(createTextCell(totalConcepts.toString()  + "€", Element.ALIGN_RIGHT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont(FontFactory.COURIER, 10, Font.NORMAL)));
+		table.addCell(createTextCell(totalConcepts.toString()  + " €", Element.ALIGN_RIGHT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont(FontFactory.COURIER, 10, Font.NORMAL)));
 		
 		table.addCell(createTextCell("I.V.A:", Element.ALIGN_RIGHT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont(FontFactory.COURIER, 10, Font.NORMAL)));
 		table.addCell(createTextCell(bill.getTax().toString() + "%", Element.ALIGN_RIGHT, Element.ALIGN_TOP, Rectangle.NO_BORDER, FontFactory.getFont(FontFactory.COURIER, 10, Font.NORMAL)));
@@ -221,7 +221,7 @@ public class PdfGenaratorUtil {
 		
 		BigDecimal totalPrint = totalConcepts.add(tax).setScale(2, BigDecimal.ROUND_HALF_UP);	
 		
-		table.addCell(createTextCell(totalPrint.toString(), Element.ALIGN_RIGHT, Element.ALIGN_TOP, Rectangle.BOX, FontFactory.getFont(FontFactory.COURIER, 14, Font.BOLDITALIC)));
+		table.addCell(createTextCell(totalPrint.toString() + " €", Element.ALIGN_RIGHT, Element.ALIGN_TOP, Rectangle.BOX, FontFactory.getFont(FontFactory.COURIER, 14, Font.BOLDITALIC)));
 		return table;
 	}
 }
