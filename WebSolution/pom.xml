@@ -13,6 +13,7 @@
 	<version>1.0</version>
 	<name>WebSolution</name>
 	<description>efactura Web</description>
+	<packaging>war</packaging>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -131,6 +132,18 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-war-plugin</artifactId>
+		        <version>3.2.2</version>
+		        <configuration>
+		          <archive>
+		            <manifest>
+		              <addClasspath>true</addClasspath>
+		            </manifest>
+		          </archive>
+		        </configuration>
+		      </plugin>
 		</plugins>
 	</build>
 
