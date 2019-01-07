@@ -9,7 +9,7 @@ $(document)
 									{
 										"sAjaxSource" : "/bill/list",
 										"sAjaxDataProp" : "",
-										"order" : [ [ 0, "asc" ] ],
+										"order" : [ [ 4, "desc" ] ],
 										"aoColumns" : [ {
 											"mData" : "id"
 										} , {

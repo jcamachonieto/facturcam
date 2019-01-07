@@ -24,7 +24,7 @@
 				<div class="modal-body">
 					<div class="form-group">
 						<label class="btn btn-primary">
-						    Seleccionar logo <input type="file" id="logo" hidden>
+						    Seleccionar logo <input type="file" name="logo" id="logo" hidden>
 						</label>
 						<img id='img-upload' style="height: 100px; widows: 100px" th:src="@{'data:image/jpeg;base64,'+${logo}}"/>
 				    </div>
@@ -65,6 +65,17 @@
 								</div>
 							</div>
 						</div>
+						
+						<div class="form-group">
+							<label for="dropboxAccessToken" class="cols-sm-2 control-label">Forma de pago</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<input type="text" class="form-control"
+										th:field="*{paymentMethod}" placeholder="Forma de pago" />
+								</div>
+							</div>
+						</div>
+						
 						<div class="form-group">
 							<label for="name" class="cols-sm-2 control-label">Dirección</label>
 							<div class="cols-sm-10">
@@ -117,6 +128,26 @@
 								<div class="input-group">
 									<input type="text" class="form-control" th:required="required"
 										th:field="*{telephone}" placeholder="Teléfono" />
+								</div>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="dropboxApplication" class="cols-sm-2 control-label">Aplicación Dropbox</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<input type="text" class="form-control"
+										th:field="*{dropboxApplication}" placeholder="Dropbox Application" />
+								</div>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="dropboxAccessToken" class="cols-sm-2 control-label">Dropbox Access Token</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<input type="text" class="form-control" th:required="required"
+										th:field="*{dropboxAccessToken}" placeholder="dropboxAccessToken" />
 								</div>
 							</div>
 						</div>

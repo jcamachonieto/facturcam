@@ -61,5 +61,10 @@ public class UserEntity {
 	
 	private Date backup;
 	private String backupPeriod;
+	
+	private String dropboxApplication;
+	private String dropboxAccessToken;
+	
+	private String paymentMethod;
 
 }

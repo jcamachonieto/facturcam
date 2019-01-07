@@ -75,6 +75,7 @@ public class BillDataProvider {
 				params.add(data.getTax());
 				params.add(data.getId());
 				idBill = data.getId();
+				dataProvider.execute(conn, query, params);
 			}
 			
 			if (data.getId() != 0) {

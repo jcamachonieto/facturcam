@@ -10,7 +10,6 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ResolvableType;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -53,9 +52,6 @@ public class LoginController {
     
     @Autowired
     DropBoxBackupUtil dropBoxBackupUtil;
-    
-    @Value("${dropbox.accessToken}")
-	private String accessToken;
     
     @Autowired
 	private FileUtils fileUtils;
@@ -145,7 +141,7 @@ public class LoginController {
             	String databaseFile = fileUtils.getFullPathDatabase();
                 if (new File(databaseFile).exists()
                 	&& dobackup) {
-	            	dropBoxBackupUtil.backup(accessToken, databaseFile, user);
+	            	dropBoxBackupUtil.backupDatabase(databaseFile, user);
 	            		user.setBackup(new Date());
 	            		user = userDataProvider.save(user);
             	}

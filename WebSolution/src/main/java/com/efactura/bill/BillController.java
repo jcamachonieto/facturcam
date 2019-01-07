@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,8 @@ import com.efactura.client.model.ClientEntity;
 import com.efactura.client.service.ClientDataProvider;
 import com.efactura.message.model.MessageConstants;
 import com.efactura.message.model.MessageDto;
+import com.efactura.user.model.UserEntity;
+import com.efactura.utils.DropBoxBackupUtil;
 import com.efactura.utils.PdfGenaratorUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.text.DocumentException;
@@ -52,6 +56,12 @@ public class BillController {
 	
 	@Autowired
 	PdfGenaratorUtil pdfGenaratorUtil;
+	
+	@Autowired
+    DropBoxBackupUtil dropBoxBackupUtil;
+	
+	@Autowired
+	HttpSession session;
 
 	@GetMapping("/bill")
 	public ModelAndView homePage(Model model) {
@@ -117,6 +127,12 @@ public class BillController {
 			headers.setContentDispositionFormData(filename, filename);
 			headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 			response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
+			
+			try {
+				UserEntity userSession = (UserEntity) session.getAttribute("user");
+				dropBoxBackupUtil.backupBill(bill, contents, userSession);
+			} catch (Exception e) {
+			}
 		} catch (DocumentException e) {
 			response = new ResponseEntity<>(null, null, HttpStatus.BAD_REQUEST);
 		}
