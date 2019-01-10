@@ -5,7 +5,25 @@
 	layout:decorate="~{/shared/layout}">
 
 <div layout:fragment="page_content" id="page_content">
-	
+	<div>
+		<p>
+			<h2>Copia de seguridad</h2>
+		</p>
+		<p>
+			<label>Última copia de seguridad realizada:</label>
+			<label th:text="${lastBackup}"></label>
+		</p>
+		<p>
+			<form action="#" th:action="@{/backup}" method="post">
+				<input type="submit" value="Copia de seguridad">
+			</form>
+		</p>
+	</div>
+	<div>
+		<p>
+			<label>Version Aplicación:</label> <label th:text="${@environment.getProperty('version')}"></label>
+		</p>
+	</div>
 </div>
 
 <div layout:fragment="scripts" id="scripts">

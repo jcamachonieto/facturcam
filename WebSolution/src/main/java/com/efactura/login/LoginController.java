@@ -118,30 +118,33 @@ public class LoginController {
             try {
             	boolean dobackup = false;
             	
-            	Calendar nextBackupCalendar = Calendar.getInstance();
-            	nextBackupCalendar.setTime(user.getBackup());
-                if (user.getBackupPeriod().equals("d")) {
-                	nextBackupCalendar.add(Calendar.DAY_OF_YEAR, 1);
-                }
-                if (user.getBackupPeriod().equals("w")) {
-                	nextBackupCalendar.add(Calendar.WEEK_OF_YEAR, 1);
-                }
-                if (user.getBackupPeriod().equals("m")) {
-                	nextBackupCalendar.add(Calendar.MONTH, 1);
-                }
-                if (user.getBackupPeriod().equals("y")) {
-                	nextBackupCalendar.add(Calendar.YEAR, 1);
-                }
-            	
-            	if (user.getBackup() == null
-                	|| nextBackupCalendar.before(Calendar.getInstance())) {
-                	dobackup = true;
-                }
+            	if (user.getBackup() == null) {
+            		dobackup = true;
+            	} else {
+	            	Calendar nextBackupCalendar = Calendar.getInstance();
+	            	nextBackupCalendar.setTime(user.getBackup());
+	                if (user.getBackupPeriod().equals("d")) {
+	                	nextBackupCalendar.add(Calendar.DAY_OF_YEAR, 1);
+	                }
+	                if (user.getBackupPeriod().equals("w")) {
+	                	nextBackupCalendar.add(Calendar.WEEK_OF_YEAR, 1);
+	                }
+	                if (user.getBackupPeriod().equals("m")) {
+	                	nextBackupCalendar.add(Calendar.MONTH, 1);
+	                }
+	                if (user.getBackupPeriod().equals("y")) {
+	                	nextBackupCalendar.add(Calendar.YEAR, 1);
+	                }
+	                
+	                if (nextBackupCalendar.before(Calendar.getInstance())) {
+	                	dobackup = true;
+	                }
+            	}
                     
             	String databaseFile = fileUtils.getFullPathDatabase();
                 if (new File(databaseFile).exists()
                 	&& dobackup) {
-	            	dropBoxBackupUtil.backupDatabase(databaseFile, user);
+	            	dropBoxBackupUtil.AutomaticBackupDatabase(databaseFile, user);
 	            		user.setBackup(new Date());
 	            		user = userDataProvider.save(user);
             	}

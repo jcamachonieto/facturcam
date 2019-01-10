@@ -35,9 +35,9 @@ import com.efactura.message.model.MessageConstants;
 import com.efactura.message.model.MessageDto;
 import com.efactura.user.model.UserEntity;
 import com.efactura.utils.DropBoxBackupUtil;
+import com.efactura.utils.ItextPdfGenerator;
 import com.efactura.utils.PdfGenaratorUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itextpdf.text.DocumentException;
 
 @RestController
 public class BillController {
@@ -56,6 +56,9 @@ public class BillController {
 	
 	@Autowired
 	PdfGenaratorUtil pdfGenaratorUtil;
+	
+	@Autowired
+	ItextPdfGenerator itextPdfGenerator;
 	
 	@Autowired
     DropBoxBackupUtil dropBoxBackupUtil;
@@ -118,7 +121,8 @@ public class BillController {
 			ClientEntity client = clientDataProvider.load(bill.getIdClient());
 			List<ConceptEntity> concepts = conceptDataProvider.getList(idBill);
 			
-			byte[] contents = pdfGenaratorUtil.createPDf(client, bill, concepts);
+			// byte[] contents = pdfGenaratorUtil.createPDf(client, bill, concepts);
+			byte[] contents = itextPdfGenerator.createPDf(client, bill, concepts);
 			
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.parseMediaType("application/pdf"));
@@ -132,8 +136,10 @@ public class BillController {
 				UserEntity userSession = (UserEntity) session.getAttribute("user");
 				dropBoxBackupUtil.backupBill(bill, contents, userSession);
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (DocumentException e) {
+		} catch (Exception e) {
+			e.printStackTrace();
 			response = new ResponseEntity<>(null, null, HttpStatus.BAD_REQUEST);
 		}
 	    
