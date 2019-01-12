@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report4" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="60fbd1a3-e144-485f-93fe-875de268bbf6">
 	<property name="ireport.zoom" value="1.7715610000000017"/>
-	<property name="ireport.x" value="89"/>
-	<property name="ireport.y" value="359"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="259"/>
 	<style name="table">
 		<box>
 			<topPen lineWidth="1.0" lineColor="#000000"/>
@@ -105,6 +105,12 @@
 	<parameter name="iva" class="java.lang.String"/>
 	<parameter name="totalIva" class="java.lang.String"/>
 	<parameter name="totalValue" class="java.lang.String"/>
+	<field name="description" class="java.lang.String">
+		<fieldDescription><![CDATA[description]]></fieldDescription>
+	</field>
+	<field name="value" class="java.math.BigDecimal"/>
+	<field name="quantity" class="java.math.BigDecimal"/>
+	<field name="taxBase" class="java.math.BigDecimal"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -201,64 +207,63 @@
 			</textField>
 		</band>
 	</pageHeader>
+	<columnHeader>
+		<band height="38">
+			<staticText>
+				<reportElement style="table_CH" x="14" y="15" width="302" height="20" uuid="c759aedb-64a1-48f9-9f45-906d860911ff"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Concepto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_CH" x="316" y="15" width="92" height="20" uuid="4e492ca4-2688-4e85-9b89-346d1bc92644"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Base Imponible]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_CH" x="408" y="15" width="72" height="20" uuid="f7a27cf8-3a6f-4180-b4ef-cb9a34f8418c"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_CH" x="480" y="15" width="72" height="20" uuid="81c8d4cb-bd1b-48fe-a055-70d690286c22"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importe]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
 	<detail>
-		<band height="184" splitType="Stretch">
-			<componentElement>
-				<reportElement key="table 3" x="14" y="6" width="549" height="164" uuid="b239f383-0063-48af-8db3-e6f7a09378d0"/>
-				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Table Dataset 5" uuid="15fdd3df-cb11-44d6-adee-2bc3415a9da0">
-						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource(1)]]></dataSourceExpression>
-					</datasetRun>
-					<jr:column width="274" uuid="2282b16f-105c-450d-b880-05b065b9fa4f">
-						<jr:tableHeader style="table_TH" height="23" rowSpan="1">
-							<staticText>
-								<reportElement x="107" y="0" width="60" height="23" uuid="f08907fb-f240-4655-bf65-c85a9206671a"/>
-								<text><![CDATA[Descripción]]></text>
-							</staticText>
-						</jr:tableHeader>
-						<jr:tableFooter height="30" rowSpan="1"/>
-						<jr:columnHeader height="30" rowSpan="1"/>
-						<jr:columnFooter height="30" rowSpan="1"/>
-						<jr:detailCell height="20" rowSpan="1"/>
-					</jr:column>
-					<jr:column width="101" uuid="adc3b10e-bf94-4212-88e3-df79d396f862">
-						<jr:tableHeader style="table_TH" height="23" rowSpan="1">
-							<staticText>
-								<reportElement x="13" y="0" width="75" height="23" uuid="fa146e1f-6022-48af-8511-f86c14e9da07"/>
-								<text><![CDATA[Base Imponible]]></text>
-							</staticText>
-						</jr:tableHeader>
-						<jr:tableFooter height="30" rowSpan="1"/>
-						<jr:columnHeader height="30" rowSpan="1"/>
-						<jr:columnFooter height="30" rowSpan="1"/>
-						<jr:detailCell height="20" rowSpan="1"/>
-					</jr:column>
-					<jr:column width="74" uuid="503c518d-873e-4fe4-b372-82b32d79a566">
-						<jr:tableHeader style="table_TH" height="23" rowSpan="1">
-							<staticText>
-								<reportElement x="12" y="0" width="50" height="23" uuid="1bae48ca-a19a-4024-a70e-c6dca4694a60"/>
-								<text><![CDATA[Cantidad]]></text>
-							</staticText>
-						</jr:tableHeader>
-						<jr:tableFooter height="30" rowSpan="1"/>
-						<jr:columnHeader height="30" rowSpan="1"/>
-						<jr:columnFooter height="30" rowSpan="1"/>
-						<jr:detailCell height="20" rowSpan="1"/>
-					</jr:column>
-					<jr:column width="109" uuid="b835f03d-49c2-42c6-9616-95d119ab0b23">
-						<jr:tableHeader style="table_TH" height="23" rowSpan="1">
-							<staticText>
-								<reportElement x="32" y="0" width="45" height="23" uuid="daed2eee-6f41-4847-a818-4fd10b80ea96"/>
-								<text><![CDATA[Importe]]></text>
-							</staticText>
-						</jr:tableHeader>
-						<jr:tableFooter height="30" rowSpan="1"/>
-						<jr:columnHeader height="30" rowSpan="1"/>
-						<jr:columnFooter height="30" rowSpan="1"/>
-						<jr:detailCell height="20" rowSpan="1"/>
-					</jr:column>
-				</jr:table>
-			</componentElement>
+		<band height="50" splitType="Stretch">
+			<textField>
+				<reportElement x="14" y="6" width="302" height="39" uuid="6da0cb38-a019-4a5b-aaa8-5cd9b41f2615"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="316" y="6" width="92" height="39" uuid="cda5e6dc-e4dc-447c-8648-3657621ad81c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{taxBase}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="408" y="6" width="77" height="39" uuid="9d90f4f2-5de6-4369-b288-ec12ca3f4b21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="485" y="6" width="67" height="39" uuid="843b75f0-fd75-4517-9d01-f877c547c8d3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{value}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="15" y="48" width="537" height="1" uuid="12aa926e-b02e-4565-9a12-15507f6ddc6f"/>
+			</line>
 		</band>
 	</detail>
 	<columnFooter>
@@ -322,7 +327,7 @@
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="121" splitType="Stretch">
+		<band height="108" splitType="Stretch">
 			<textField>
 				<reportElement x="392" y="62" width="85" height="20" uuid="d0e74fe2-d9ef-4fb7-a364-58a3948d038f"/>
 				<textElement textAlignment="Justified" markup="none"/>

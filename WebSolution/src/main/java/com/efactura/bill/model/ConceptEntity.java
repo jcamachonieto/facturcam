@@ -25,17 +25,20 @@ public class ConceptEntity {
 	@NotNull
 	private BigDecimal taxBase;
 	
+	private BigDecimal value;
+	
 	public ConceptEntity() {
 		super();
 	}
 	
-	public ConceptEntity(int id, @NotNull Integer idBill, @NotNull String description, @NotNull BigDecimal quantity, @NotNull BigDecimal taxBase) {
+	public ConceptEntity(int id, @NotNull Integer idBill, @NotNull String description, @NotNull BigDecimal quantity, @NotNull BigDecimal taxBase, BigDecimal value) {
 		super();
 		this.id = id;
 		this.idBill = idBill;
 		this.description = description;
 		this.quantity = quantity;
 		this.taxBase = taxBase;
+		this.value = value;
 	}
 	
 	public ConceptEntity(@NotNull String description, @NotNull BigDecimal quantity, @NotNull BigDecimal taxBase) {

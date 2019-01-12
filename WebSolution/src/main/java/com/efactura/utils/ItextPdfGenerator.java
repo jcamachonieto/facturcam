@@ -98,8 +98,13 @@ public class ItextPdfGenerator {
 		params.put("userTelephone", userSession.getTelephone());
 		params.put("userEmail", userSession.getEmail());
 		
-		JRBeanCollectionDataSource con = new JRBeanCollectionDataSource(concepts);
-		JasperPrint jasPrint = JasperFillManager.fillReport(jasReport, params, con);
+		for (ConceptEntity concept : concepts) {
+			concept.setValue(concept.getTaxBase().multiply(concept.getQuantity()));
+		}
+
+		JRBeanCollectionDataSource  ds= new JRBeanCollectionDataSource(concepts);
+		
+		JasperPrint jasPrint = JasperFillManager.fillReport(jasReport, params, ds);
         
 		// Export pdf file
 		return JasperExportManager.exportReportToPdf(jasPrint);
