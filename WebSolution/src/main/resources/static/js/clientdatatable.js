@@ -5,7 +5,7 @@ $(document)
 					table = $('#clientTable')
 							.DataTable(
 									{
-										"sAjaxSource" : "/client/list",
+										"sAjaxSource" : "/efactura/client/list",
 										"sAjaxDataProp" : "",
 										"order" : [ [ 0, "asc" ] ],
 										"aoColumns" : [ {

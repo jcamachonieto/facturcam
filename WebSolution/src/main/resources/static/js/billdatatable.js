@@ -7,7 +7,7 @@ $(document)
 					table = $('#billTable')
 							.DataTable(
 									{
-										"sAjaxSource" : "/bill/list",
+										"sAjaxSource" : "/efactura/bill/list",
 										"sAjaxDataProp" : "",
 										"order" : [ [ 4, "desc" ] ],
 										"aoColumns" : [ {
@@ -78,7 +78,7 @@ $(document)
 											$("#modalFormContent #expiration").val(moment(data['expiration']).format("DD/MM/YYYY"));
 											$("#modalFormContent #tax").val(data['tax']);
 											$.ajax({
-												url : '/concept/bill/' + data['id'],
+												url : '/efactura/concept/bill/' + data['id'],
 												type : 'get',
 												success : function(data) {
 													$(data).each(function(index, element) {
@@ -93,7 +93,7 @@ $(document)
 										} else if (this.id === 'pdf') {
 											var name = data['year'] + '_' + data['number'] + ".pdf";
 											var req = new XMLHttpRequest();
-										    req.open("POST", '/bill/download/' + data['id'], true);
+										    req.open("POST", '/efactura/bill/download/' + data['id'], true);
 										    req.responseType = "blob";
 										    req.onreadystatechange = function () {
 										        if (req.readyState === 4 && req.status === 200) {
