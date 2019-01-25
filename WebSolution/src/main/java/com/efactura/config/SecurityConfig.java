@@ -23,7 +23,6 @@ import org.springframework.security.oauth2.client.registration.InMemoryClientReg
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -41,29 +40,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-        	.authorizeRequests()
-            .antMatchers("/login", "/loginFailure")
+        .authorizeRequests()
+            .antMatchers("/", "/home").permitAll()
+            .anyRequest().authenticated()
+            .and()
+        .formLogin()
+            .loginPage("/")
             .permitAll()
-            .anyRequest()
-            .authenticated()
             .and()
-            .oauth2Login()
-            .loginPage("/login")
-            .authorizationEndpoint()
-            .baseUri("/oauth2/authorize-client")
-            .authorizationRequestRepository(authorizationRequestRepository())
-            .and()
-            .tokenEndpoint()
-            .accessTokenResponseClient(accessTokenResponseClient())
-            .and()
-            .defaultSuccessUrl("/loginSuccess")
-            .failureUrl("/loginFailure")
-            .and()
-            .logout()
-            .invalidateHttpSession(true)
-            .deleteCookies("JSESSIONID")
-            .logoutSuccessUrl("/login")
-            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+        .logout()
+            .permitAll();
     }
     
     @Bean

@@ -117,7 +117,7 @@ public class HomeController {
     			.text(MessageConstants.GENERIC_TEXT_ERROR)
     			.type(MessageConstants.TYPE_ERROR)
     			.build());
-        return "/";
+        return "/loginError";
     }
     
     @PostMapping("/backup")
