@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Efactura</title>
+
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+
+<link rel="stylesheet" type="text/css"
+	href="https://bootswatch.com/4/cerulean/bootstrap.min.css" />
+<script type="text/javascript"
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+<script
+	src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+	
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+</head>
+
+<body>
+<div class="container" style="height: 100%;">
+	<h1>Se ha producido un erro al iniciar sesion</h1>
+</div>
+
+<script th:inline="javascript" th:if="${message != null}">
+/*<![CDATA[*/   
+	
+	$.confirm({
+	    title: /*[[${message.title}]]*/,
+	    content: /*[[${message.text}]]*/,
+	    type: /*[[${message.type}]]*/,
+	    typeAnimated: true,
+	    autoClose: 'cerrar|8000',
+	    buttons: {
+	        cerrar: function () {
+	        }
+	    }
+	});
+
+/*]]>*/
+</script>
+
+</body>
+</html>

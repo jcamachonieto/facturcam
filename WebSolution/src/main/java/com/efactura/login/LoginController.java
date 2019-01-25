@@ -101,7 +101,7 @@ public class LoginController {
             			.type(MessageConstants.TYPE_ERROR)
             			.build());
             	session.invalidate();
-            	return getLoginInfo(model);
+            	// return getLoginInfo(model);
             }
             if (user.getExpirationDate().getTime() < new Date().getTime()) {
             	model.addAttribute("message", MessageDto.builder()
@@ -110,7 +110,7 @@ public class LoginController {
             			.type(MessageConstants.TYPE_ERROR)
             			.build());
             	session.invalidate();
-            	return getLoginInfo(model);
+            	// return getLoginInfo(model);
             }
             
             session.setAttribute("user", user);
@@ -155,15 +155,5 @@ public class LoginController {
         }
 
         return "redirect:/";
-    }
-    
-    @GetMapping("/loginFailure")
-    public String getLoginInfo(Model model) {
-    	model.addAttribute("message", MessageDto.builder()
-    			.title(TITLE_MESSAGE)
-    			.text(MessageConstants.GENERIC_TEXT_ERROR)
-    			.type(MessageConstants.TYPE_ERROR)
-    			.build());
-        return getLoginPage(model);
     }
 }
