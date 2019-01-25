@@ -35,7 +35,7 @@ public class HomeController {
 	@Autowired
 	HttpSession session;
 	
-	@Autowired
+	@Autowired(required=true)
     private IUserDataProvider userDataProvider;
 	
 	@Value("${email}")
