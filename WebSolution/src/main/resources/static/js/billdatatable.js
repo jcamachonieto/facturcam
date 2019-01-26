@@ -271,7 +271,7 @@ function remove(data) {
 				action : function() {
 					$.ajax({
 						type : 'DELETE',
-						url : '/bill/' + data['id'],
+						url : '/efactura/bill/' + data['id'],
 						cache : false,
 						success : function(data) {
 							$.confirm({

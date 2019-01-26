@@ -45,6 +45,12 @@ public class HomeController {
  
     @GetMapping("/")
     public String homePage(Model model) {
+    	try {
+			Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	UserEntity user = userDataProvider.findByEmail(email);
         if (user == null) {
         	model.addAttribute("message", MessageDto.builder()

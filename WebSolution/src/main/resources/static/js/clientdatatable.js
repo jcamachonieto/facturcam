@@ -102,7 +102,7 @@ function remove(data) {
 				action : function() {
 					$.ajax({
 						type : 'DELETE',
-						url : '/client/' + data['id'],
+						url : '/efactura/client/' + data['id'],
 						cache : false,
 						success : function(data) {
 							$.confirm({

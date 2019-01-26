@@ -181,7 +181,7 @@
 	    function uploadFile(input) {
 	    	if (input.files && input.files[0]) {
 	    		$.ajax({
-	    	        url: "/uploadFile",
+	    	        url: "/efactura/uploadFile",
 	    	        type: "POST",
 	    	        data: new FormData($("#upload-file-form")[0]),
 	    	        enctype: 'multipart/form-data',
